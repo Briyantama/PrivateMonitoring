@@ -31,4 +31,9 @@
     <string name="grafik_arus_masuk">Grafik Arus Masuk</string>
     <string name="grafik_soc">Grafik SoC</string>
     <string name="lorem_ipsum">Lorem ipsum dolor sit amet</string>
+    <string name="notification">Notification</string>
+    <string name="history">History</string>
+    <string name="select_date">Select Date</string>
+    <string name="date">date</string>
+    <string name="time">Time</string>
 </resources>

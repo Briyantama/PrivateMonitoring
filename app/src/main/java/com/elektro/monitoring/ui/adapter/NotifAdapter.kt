@@ -1,14 +1,10 @@
-package com.elektro.monitoring.ui
+package com.elektro.monitoring.ui.adapter
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.recyclerview.widget.RecyclerView
 import com.elektro.monitoring.databinding.ItemNotifBinding
-import com.elektro.monitoring.helper.Constants
-import com.elektro.monitoring.helper.Constants.TAG
 import com.elektro.monitoring.helper.utils.showToast
 import com.elektro.monitoring.model.NotifikasiSuhu
 import com.google.firebase.database.DataSnapshot
@@ -30,7 +26,6 @@ class NotifAdapter(private val itemList: List<NotifikasiSuhu>, private val conte
                         object : ValueEventListener {
                             override fun onDataChange(snapshot: DataSnapshot) {
                                 for (childSnapshot in snapshot.children) {
-                                    Log.d(TAG, "onDataChange: ${childSnapshot.key?.toInt()}")
                                     childSnapshot.ref.removeValue()
                                         .addOnSuccessListener {
                                             context.showToast("Notifikasi ini berhasil dihapus")
@@ -41,7 +36,7 @@ class NotifAdapter(private val itemList: List<NotifikasiSuhu>, private val conte
                             }
 
                            override fun onCancelled(error: DatabaseError) {
-                            }
+                           }
                         })
             }
         }

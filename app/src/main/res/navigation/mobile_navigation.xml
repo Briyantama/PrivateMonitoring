@@ -24,6 +24,9 @@
         <action
             android:id="@+id/action_homeFragment_to_notificationFragment"
             app:destination="@id/notificationFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_dateSelectFragment"
+            app:destination="@id/dateSelectFragment" />
     </fragment>
     <fragment
         android:id="@+id/splashFragment"
@@ -80,4 +83,18 @@
         android:name="com.elektro.monitoring.ui.home.NotificationFragment"
         android:label="fragment_notification"
         tools:layout="@layout/fragment_notification" />
+    <fragment
+        android:id="@+id/dateSelectFragment"
+        android:name="com.elektro.monitoring.ui.data.DateSelectFragment"
+        android:label="fragment_date_select"
+        tools:layout="@layout/fragment_date_select" >
+        <action
+            android:id="@+id/action_dateSelectFragment_to_dataShowFragment"
+            app:destination="@id/dataShowFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/dataShowFragment"
+        android:name="com.elektro.monitoring.ui.data.DataShowFragment"
+        android:label="fragment_data_show"
+        tools:layout="@layout/fragment_data_show" />
 </navigation>

@@ -1,6 +1,7 @@
 package com.elektro.monitoring.ui.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import com.elektro.monitoring.R
 import com.elektro.monitoring.databinding.FragmentHomeBinding
+import com.elektro.monitoring.helper.Constants.TAG
 import com.elektro.monitoring.helper.sharedpref.SharedPrefData
 import com.elektro.monitoring.model.Data10Min
 import com.elektro.monitoring.model.DataNow
@@ -73,11 +75,16 @@ class HomeFragment : Fragment() {
             Navigation.findNavController(view)
                 .navigate(R.id.action_homeFragment_to_notificationFragment)
         }
+
+        binding.ivHistory.setOnClickListener {
+            Navigation.findNavController(view)
+                .navigate(R.id.action_homeFragment_to_dateSelectFragment)
+        }
     }
 
     override fun onResume() {
         super.onResume()
-        val selectedPanel = sharedPrefData.callDataString("selectedpanel")
+        val sizeDate = sharedPrefData.callDataInt("sizeDate")
 
         fireDatabase.getReference("panels").addListenerForSingleValueEvent(
             object : ValueEventListener {
@@ -109,40 +116,30 @@ class HomeFragment : Fragment() {
                 id: Long
             ) {
                 sharedPrefData.editDataString("selectedpanel", options[position]).toString()
+
+                fireDatabase.getReference("panels/${options[position]}/$sizeDate/$tanggal")
+                    .limitToLast(7).addValueEventListener(object : ValueEventListener {
+                        override fun onDataChange(snapshot: DataSnapshot) {
+                            dataViewModel.mdata10MinList.value?.clear()
+                            val listData: MutableList<Data10Min> = mutableListOf()
+
+                            snapshot.children.forEach { value ->
+                                val newData = value.getValue(Data10Min::class.java)
+                                Log.d(TAG, "onDataChange: $newData")
+                                newData?.let { listData.add(it) }
+                            }
+
+                            dataViewModel.mdata10MinList.postValue(listData)
+                        }
+
+                        override fun onCancelled(error: DatabaseError) {
+                        }
+                    })
             }
 
             override fun onNothingSelected(parentView: AdapterView<*>) {
             }
         }
-
-        fireDatabase.getReference("panels").child(selectedPanel).child(tanggal)
-            .addValueEventListener(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    sharedPrefData.editDataInt("sizeData", snapshot.childrenCount.toInt())
-                }
-
-                override fun onCancelled(error: DatabaseError) {
-                }
-            })
-
-        fireDatabase.getReference("panels").child(selectedPanel).child(tanggal)
-            .orderByChild(tanggal).limitToLast(7)
-            .addValueEventListener(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    dataViewModel.mdata10MinList.value?.clear()
-                    val listData: MutableList<Data10Min> = mutableListOf()
-
-                    snapshot.children.forEach { value ->
-                        val newData = value.getValue(Data10Min::class.java)
-                        newData?.let { listData.add(it) }
-                    }
-
-                    dataViewModel.mdata10MinList.postValue(listData)
-                }
-
-                override fun onCancelled(error: DatabaseError) {
-                }
-            })
 
         fireDatabase.getReference("dataNow").addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -206,8 +203,14 @@ class HomeFragment : Fragment() {
             binding.showArusMasuk.text = it.arusMasuk.toString()
             binding.showArusKeluar.text = it.arusKeluar.toString()
             binding.showTegangan.text = it.tegangan.toString()
-            binding.showSoc.text = "${it.soc}%"
-            binding.showSuhu.text = "${it.suhu}°C"
+            binding.showSoc.text = buildString {
+                append(it.soc)
+                append("%")
+            }
+            binding.showSuhu.text = buildString {
+                append(it.suhu)
+                append("°C")
+            }
         }
     }
 

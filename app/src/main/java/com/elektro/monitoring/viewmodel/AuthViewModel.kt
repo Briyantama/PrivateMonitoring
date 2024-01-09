@@ -40,6 +40,7 @@ class AuthViewModel @Inject constructor(private val authRepository: AuthReposito
 
     val errorModel: MutableLiveData<ErrorModel> = MutableLiveData()
     var shouldNavigateUp: MutableLiveData<Boolean> = MutableLiveData()
+    val service: MutableLiveData<Boolean> = MutableLiveData()
 
     init {
         errorModel.value = ErrorModel()

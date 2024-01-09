@@ -7,7 +7,6 @@ import android.os.IBinder
 import android.os.Looper
 import android.util.Log
 import com.elektro.monitoring.data.repo.NotificationRepository
-import com.elektro.monitoring.helper.Constants.NOTIFICATION_ID
 import com.elektro.monitoring.helper.Constants.TAG
 import com.elektro.monitoring.helper.sharedpref.SharedPrefData
 import com.elektro.monitoring.model.DataNow
@@ -51,9 +50,7 @@ class BackgroundService: Service() {
 
     override fun onDestroy() {
         super.onDestroy()
-        Log.d(TAG, "onDestroy: hancur")
         handler.removeCallbacks(runnable)
-        stopForeground(STOP_FOREGROUND_DETACH)
         stopSelf()
     }
 
@@ -61,6 +58,7 @@ class BackgroundService: Service() {
         override fun run() {
             val sharedPrefData = SharedPrefData(application)
             val currentTime = System.currentTimeMillis()
+            val sizeDate = sharedPrefData.callDataInt("sizeDate")
             val selectedPanel = sharedPrefData.callDataString("selectedpanel")
             val tanggal: String = tf.format(Calendar.getInstance().time)
             Log.d(TAG, "run: berjalan")
@@ -78,7 +76,26 @@ class BackgroundService: Service() {
                     }
                 })
 
-            fireDatabase.getReference("panels").child(selectedPanel).child(tanggal)
+            fireDatabase.getReference("panels").child("Solar A")
+                .limitToLast(1).addValueEventListener(object : ValueEventListener{
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        for (childSnapshot in snapshot.children) {
+                            childSnapshot.children.forEach {value ->
+                                value.key?.let {
+                                    sharedPrefData.editDataString("date", it)
+                                }
+                            }
+                            childSnapshot.key?.toInt()?.let {
+                                sharedPrefData.editDataInt("sizeDate", it) }
+                        }
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
+                    }
+                })
+
+            fireDatabase.getReference("panels").child(selectedPanel)
+                .child(sizeDate.toString()).child(tanggal).limitToLast(1)
                 .addValueEventListener(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
                         sharedPrefData.editDataInt("sizeData", snapshot.childrenCount.toInt())
@@ -97,12 +114,10 @@ class BackgroundService: Service() {
                         if (newData != null) {
                             if (currentTime - lastNotificationTime >= 10000 && newData.suhu >= 35f) {
                                 val jam = sdf.format(Calendar.getInstance().time)
-                                startForeground(NOTIFICATION_ID,
-                                    notificationRepository.sendNotification(
-                                        applicationContext,
-                                        "Suhu tinggi: ${newData.suhu}°C",
-                                        "Watercooling menyala"
-                                    )
+                                notificationRepository.sendNotification(
+                                    applicationContext,
+                                    "Suhu tinggi: ${newData.suhu}°C",
+                                    "Watercooling menyala"
                                 )
 
                                 val notifSuhu = NotifikasiSuhu(

@@ -7,43 +7,47 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.provider.SyncStateContract.Helpers.update
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavOptions
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.elektro.monitoring.R
 import com.elektro.monitoring.data.service.BackgroundService
 import com.elektro.monitoring.databinding.ActivityMainBinding
 import com.elektro.monitoring.helper.Constants
+import com.elektro.monitoring.helper.utils.showToast
 import com.elektro.monitoring.viewmodel.AuthViewModel
-import com.elektro.monitoring.viewmodel.DataViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import hilt_aggregated_deps._com_elektro_monitoring_ui_auth_RegisterFragment_GeneratedInjector
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    val dataViewModel: DataViewModel by viewModels()
+    private val authViewModel: AuthViewModel by viewModels()
 
     private val navController by lazy {
         (supportFragmentManager.findFragmentById(R.id.nav_host_activity) as NavHostFragment).navController
     }
+
     private val requestPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
-    ) { granted: Boolean ->
-        if (granted) {
-            val serviceIntent = Intent(this, BackgroundService::class.java)
-            startService(serviceIntent)
-        }
+    ) {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
+
+        authViewModel.service.postValue(false)
 
         binding.bottomNavBar.setupWithNavController(navController)
         binding.bottomNavBar.setOnItemSelectedListener {
@@ -79,13 +83,43 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
     }
 
+
     override fun onPostResume() {
         super.onPostResume()
+        authViewModel.loggedUser()
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             requestPermissionLauncher.launch(
                 Manifest.permission.POST_NOTIFICATIONS
             )
         }
+
+        lifecycleScope.launch {
+            lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                authViewModel.user.collect {
+                    if (it.data != null) {
+                        authViewModel.service.postValue(true)
+                    }
+                }
+            }
+        }
+
+        authViewModel.service.observe(this){ service ->
+            if (service == false) {
+                val serviceIntent = Intent(this, BackgroundService::class.java)
+                stopService(serviceIntent)
+            } else {
+                val serviceIntent = Intent(this, BackgroundService::class.java)
+                startService(serviceIntent)
+            }
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        authViewModel.service.postValue(false)
+        val serviceIntent = Intent(this, BackgroundService::class.java)
+        stopService(serviceIntent)
     }
 
     companion object {

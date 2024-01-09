@@ -1,23 +1,20 @@
 package com.elektro.monitoring.ui.home
 
-import android.app.Application
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.elektro.monitoring.databinding.FragmentNotificationBinding
-import com.elektro.monitoring.helper.Constants.TAG
 import com.elektro.monitoring.helper.sharedpref.SharedPrefData
+import com.elektro.monitoring.helper.utils.dialogPN
 import com.elektro.monitoring.helper.utils.showToast
 import com.elektro.monitoring.model.NotifikasiSuhu
-import com.elektro.monitoring.ui.NotifAdapter
+import com.elektro.monitoring.ui.adapter.NotifAdapter
 import com.elektro.monitoring.viewmodel.DataViewModel
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -43,7 +40,6 @@ class NotificationFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentNotificationBinding.inflate(inflater, container, false)
-
         return binding.root
     }
 
@@ -51,13 +47,15 @@ class NotificationFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.ivClearAll.setOnClickListener {
-            fireDatabase.getReference("notif").removeValue()
-                .addOnSuccessListener {
-                    sharedPrefData.editDataInt("sizeNotif", 0)
-                    requireContext().showToast("Semua notifikasi berhasil dihapus")
-                }.addOnFailureListener { e ->
-                    requireContext().showToast("Gagal menghapus notifikasi \n${e.message}")
-                }
+            requireContext().dialogPN("Hapus Semua Notifikasi", "Yakin?", "Iya", "Tidak") {
+                fireDatabase.getReference("notif").removeValue()
+                    .addOnSuccessListener {
+                        sharedPrefData.editDataInt("sizeNotif", 0)
+                        requireContext().showToast("Semua notifikasi berhasil dihapus")
+                    }.addOnFailureListener { e ->
+                        requireContext().showToast("Gagal menghapus notifikasi \n${e.message}")
+                    }
+            }
         }
 
         binding.btnBack.setOnClickListener {

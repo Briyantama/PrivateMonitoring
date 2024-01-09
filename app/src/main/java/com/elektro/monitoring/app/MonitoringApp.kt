@@ -31,7 +31,7 @@ class MonitoringApp : Application() {
         val notificationManager = applicationContext
             .getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-        handler.post(runnable)
+        handler.postDelayed(runnable, 1000)
         if (notificationManager.getNotificationChannel(Constants.NOTIFICATION_CHANNEL_ID) == null) {
             val name = applicationContext.getString(R.string.app_name)
             val channel = NotificationChannel(

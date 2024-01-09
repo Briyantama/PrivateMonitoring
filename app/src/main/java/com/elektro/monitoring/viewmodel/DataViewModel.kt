@@ -1,6 +1,5 @@
 package com.elektro.monitoring.viewmodel
 
-import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.elektro.monitoring.helper.sharedpref.SharedPrefData
 import com.elektro.monitoring.model.Data10Min
 import com.elektro.monitoring.model.DataNow
-import com.elektro.monitoring.model.ListNotifikasiSuhu
 import com.elektro.monitoring.model.NotifikasiSuhu
 import com.github.mikephil.charting.data.Entry
 import com.google.firebase.database.FirebaseDatabase
@@ -31,31 +29,31 @@ class DataViewModel @Inject constructor(private val sharedPrefData: SharedPrefDa
     private val decimalFormat = DecimalFormat("#.###")
     private val decimalFormatSuhu = DecimalFormat("#.#")
 
-
     private val fireDatabase: FirebaseDatabase = FirebaseDatabase.getInstance()
 
     val mDataNow = MutableLiveData<DataNow>()
     val dataNow : LiveData<DataNow> = mDataNow
+    val listNotif = MutableLiveData<MutableList<NotifikasiSuhu>>()
+    val listDate = MutableLiveData<MutableList<String>>()
 
-    val mCurrentIn: MutableLiveData<MutableList<Entry>> = MutableLiveData<MutableList<Entry>>()
+    val mCurrentIn = MutableLiveData<MutableList<Entry>>()
     val currentIn: LiveData<MutableList<Entry>> get() = mCurrentIn
 
-    val mTegangan: MutableLiveData<MutableList<Entry>> = MutableLiveData<MutableList<Entry>>()
+    val mTegangan = MutableLiveData<MutableList<Entry>>()
     val tegangan: LiveData<MutableList<Entry>> get() = mTegangan
 
-    val mSoC: MutableLiveData<MutableList<Entry>> = MutableLiveData<MutableList<Entry>>()
+    val mSoC = MutableLiveData<MutableList<Entry>>()
     val stateCharge: LiveData<MutableList<Entry>> get() = mSoC
 
-    val mCurrentOut: MutableLiveData<MutableList<Entry>> = MutableLiveData<MutableList<Entry>>()
+    val mCurrentOut = MutableLiveData<MutableList<Entry>>()
     val currentOut: LiveData<MutableList<Entry>> get() = mCurrentOut
 
-    val mTime: MutableLiveData<MutableList<String>> = MutableLiveData<MutableList<String>>()
+    val mTime = MutableLiveData<MutableList<String>>()
     val time: LiveData<MutableList<String>> get() =  mTime
 
-    var mdata10MinList: MutableLiveData<MutableList<Data10Min>> = MutableLiveData<MutableList<Data10Min>>()
+    var mdata10MinList = MutableLiveData<MutableList<Data10Min>>()
     val data10MinList : LiveData<MutableList<Data10Min>> get() = mdata10MinList
 
-    val listNotif: MutableLiveData<MutableList<NotifikasiSuhu>> = MutableLiveData<MutableList<NotifikasiSuhu>>()
     private var stat = false
 
     fun update() {
@@ -152,6 +150,9 @@ class DataViewModel @Inject constructor(private val sharedPrefData: SharedPrefDa
         tegangan: Float,
         date: String
     ) {
+        val sizeData = sharedPrefData.callDataInt("sizeData") + 1
+        var sizeDate = sharedPrefData.callDataInt("sizeDate")
+        val datePanel = sharedPrefData.callDataString("date")
         val data10Min = Data10Min(
             decimalFormatSuhu.format(soc).toFloat(),
             decimalFormat.format(arusKeluar).toFloat(),
@@ -159,9 +160,14 @@ class DataViewModel @Inject constructor(private val sharedPrefData: SharedPrefDa
             currentTime,
             decimalFormat.format(tegangan).toFloat()
         )
-        val sizeData = sharedPrefData.callDataInt("sizeData")
+
+        if (date!=datePanel){
+            sizeDate+=1
+        }
+
         fireDatabase.getReference("panels").child("Solar A")
-            .child(date).child(sizeData.toString()).setValue(data10Min)
+            .child(sizeDate.toString()).child(date)
+            .child(sizeData.toString()).setValue(data10Min)
     }
 
     private fun postToFirebase1Sec(
