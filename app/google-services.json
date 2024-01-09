@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "359116873843",
+    "firebase_url": "https://smartfeeder-ba70e-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "smartfeeder-ba70e",
+    "storage_bucket": "smartfeeder-ba70e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:359116873843:android:72abc2dd68737fc28b4a06",
+        "android_client_info": {
+          "package_name": "com.elektro.monitoring"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "359116873843-ssoq2nqc90s8ehi8227qgl7n59hms6r1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDgt1w3klz7kjQTkugmpA5qJrDHDMdNNng"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "359116873843-kfd5to666l7pt1m61aovli3et4m4mber.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

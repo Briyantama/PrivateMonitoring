@@ -1,0 +1,89 @@
+package com.elektro.monitoring.ui.home
+
+import android.content.Context
+import android.os.Bundle
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.LinearLayout
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.elektro.monitoring.databinding.FragmentNotificationBinding
+import com.elektro.monitoring.helper.Constants.TAG
+import com.elektro.monitoring.helper.utils.showToast
+import com.elektro.monitoring.model.NotifikasiSuhu
+import com.elektro.monitoring.ui.NotifAdapter
+import com.elektro.monitoring.viewmodel.DataViewModel
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import dagger.hilt.android.AndroidEntryPoint
+
+@AndroidEntryPoint
+class NotificationFragment : Fragment() {
+    private var _binding: FragmentNotificationBinding? = null
+    private val binding get() = _binding!!
+
+    private val dataViewModel: DataViewModel by viewModels()
+    private val fireDatabase: FirebaseDatabase = FirebaseDatabase.getInstance()
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentNotificationBinding.inflate(inflater, container, false)
+
+        fireDatabase.getReference("notif").orderByChild("hari")
+            .addValueEventListener(object : ValueEventListener{
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val listNotifikasiSuhu: MutableList<NotifikasiSuhu> = mutableListOf()
+                    Log.d(TAG, "onDataChange: $snapshot")
+                    snapshot.children.forEach { value ->
+                        val newData = value.getValue(NotifikasiSuhu::class.java)
+                        newData?.let { listNotifikasiSuhu.add(it) }
+                    }
+
+                    dataViewModel.listNotif.postValue(listNotifikasiSuhu)
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                }
+            })
+
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.ivClearAll.setOnClickListener {
+            fireDatabase.getReference("notif").removeValue()
+                .addOnSuccessListener {
+                    requireContext().showToast("Semua notifikasi berhasil dihapus")
+                }.addOnFailureListener { e ->
+                    requireContext().showToast("Gagal menghapus notifikasi \n${e.message}")
+                }
+
+            binding.btnBack.setOnClickListener {
+                findNavController().navigateUp()
+            }
+        }
+    }
+    override fun onResume() {
+        super.onResume()
+
+        dataViewModel.listNotif.observe(viewLifecycleOwner){
+            showHomeProductList(it, requireContext())
+        }
+    }
+    private fun showHomeProductList(listNotifikasiSuhu: MutableList<NotifikasiSuhu>, context: Context) {
+        val adapter = NotifAdapter(listNotifikasiSuhu)
+        binding.rvNotif.adapter = adapter
+        binding.rvNotif.layoutManager = LinearLayoutManager(context)
+    }
+}

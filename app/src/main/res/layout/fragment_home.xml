@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginBottom="48dp"
+    tools:context=".ui.home.HomeFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:backgroundTint="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <Spinner
+            android:id="@+id/spinner_home"
+            android:layout_width="280dp"
+            android:layout_height="48dp"
+            android:backgroundTint="@color/fade_purple"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/iv_refresh"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/iv_refresh"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:src="@drawable/baseline_access_time_24"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/iv_notif"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/spinner_home"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/fade_purple" />
+
+        <ImageView
+            android:id="@+id/iv_notif"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:src="@drawable/baseline_notifications"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/iv_refresh"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/fade_purple" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout2">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/nilai"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                app:cardCornerRadius="24dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="24dp">
+
+                    <TextView
+                        android:id="@+id/tv_data_now"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_medium"
+                        android:text="@string/nilai_sekarang"
+                        android:textColor="@color/fade_purple"
+                        android:textSize="24sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/show_suhu"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_medium"
+                        android:text="@string/suhu"
+                        android:textColor="@color/fade_purple"
+                        android:textSize="24sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/tv_data_now"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/tv_data_now" />
+
+                    <TextView
+                        android:id="@+id/tv_arus_masuk"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:fontFamily="@font/roboto_medium"
+                        android:text="@string/current_in"
+                        android:textColor="@color/fade_purple"
+                        android:textSize="16sp"
+                        app:layout_constraintStart_toStartOf="@+id/tv_data_now"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_data_now" />
+
+                    <TextView
+                        android:id="@+id/show_arus_masuk"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:fontFamily="@font/roboto_medium"
+                        android:text="@string/current_in"
+                        android:textColor="@color/fade_purple"
+                        android:textSize="24sp"
+                        app:layout_constraintStart_toStartOf="@+id/tv_arus_masuk"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_arus_masuk" />
+
+                    <TextView
+                        android:id="@+id/tv_arus_keluar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:fontFamily="@font/roboto_medium"
+                        android:text="@string/current_out"
+                        android:textColor="@color/fade_purple"
+                        android:textSize="16sp"
+                        app:layout_constraintStart_toStartOf="@+id/show_arus_masuk"
+                        app:layout_constraintTop_toBottomOf="@+id/show_arus_masuk" />
+
+                    <TextView
+                        android:id="@+id/show_arus_keluar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:fontFamily="@font/roboto_medium"
+                        android:text="@string/current_out"
+                        android:textColor="@color/fade_purple"
+                        android:textSize="24sp"
+                        app:layout_constraintStart_toStartOf="@+id/tv_arus_keluar"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_arus_keluar" />
+
+                    <TextView
+                        android:id="@+id/tv_tegangan"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_medium"
+                        android:text="@string/tegangan"
+                        android:textColor="@color/fade_purple"
+                        android:textSize="16sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/tv_data_now"
+                        app:layout_constraintTop_toTopOf="@+id/tv_arus_masuk" />
+
+                    <TextView
+                        android:id="@+id/show_tegangan"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_medium"
+                        android:text="@string/tegangan"
+                        android:textColor="@color/fade_purple"
+                        android:textSize="24sp"
+                        app:layout_constraintStart_toStartOf="@+id/tv_tegangan"
+                        app:layout_constraintTop_toTopOf="@+id/show_arus_masuk" />
+
+                    <TextView
+                        android:id="@+id/tv_soc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_medium"
+                        android:text="@string/SoC"
+                        android:textColor="@color/fade_purple"
+                        android:textSize="16sp"
+                        app:layout_constraintStart_toStartOf="@+id/show_tegangan"
+                        app:layout_constraintTop_toTopOf="@+id/tv_arus_keluar" />
+
+                    <TextView
+                        android:id="@+id/show_soc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_medium"
+                        android:text="@string/SoC"
+                        android:textColor="@color/fade_purple"
+                        android:textSize="24sp"
+                        app:layout_constraintStart_toStartOf="@+id/tv_tegangan"
+                        app:layout_constraintTop_toTopOf="@+id/show_arus_keluar" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/tv_graph_volt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:fontFamily="@font/roboto_medium"
+                android:text="@string/grafik_tegangan"
+                android:textColor="@color/fade_purple"
+                android:textSize="24sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/nilai" />
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/graphVolt"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_graph_volt" />
+
+            <TextView
+                android:id="@+id/tv_graph_arus_masuk"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:fontFamily="@font/roboto_medium"
+                android:text="@string/grafik_arus_masuk"
+                android:textColor="@color/fade_purple"
+                android:textSize="24sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/graphVolt" />
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/graphCurrentIn"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_graph_arus_masuk" />
+
+            <TextView
+                android:id="@+id/tv_graph_arus_keluar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:fontFamily="@font/roboto_medium"
+                android:text="@string/grafik_arus_keluar"
+                android:textColor="@color/fade_purple"
+                android:textSize="24sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/graphCurrentIn" />
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/graphCurrentOut"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_graph_arus_keluar" />
+
+            <TextView
+                android:id="@+id/tv_graph_soc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:fontFamily="@font/roboto_medium"
+                android:text="@string/grafik_soc"
+                android:textColor="@color/fade_purple"
+                android:textSize="24sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/graphCurrentOut" />
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/graphSoC"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_graph_soc" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/graphSoC"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>
