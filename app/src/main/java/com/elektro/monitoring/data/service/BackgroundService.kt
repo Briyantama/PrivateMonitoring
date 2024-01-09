@@ -65,10 +65,13 @@ class BackgroundService: Service() {
             val tanggal: String = tf.format(Calendar.getInstance().time)
             Log.d(TAG, "run: berjalan")
 
-            fireDatabase.getReference("notif")
+            fireDatabase.getReference("notif").limitToLast(1)
                 .addValueEventListener(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
-                        sharedPrefData.editDataInt("sizeNotif", snapshot.childrenCount.toInt())
+                        for (childSnapshot in snapshot.children) {
+                            childSnapshot.key?.toInt()?.let {
+                                sharedPrefData.editDataInt("sizeNotif", it) }
+                        }
                     }
 
                     override fun onCancelled(error: DatabaseError) {
@@ -89,7 +92,7 @@ class BackgroundService: Service() {
                 .addValueEventListener(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
                         val newData = snapshot.getValue(DataNow::class.java)
-                        val sizeNotif = sharedPrefData.callDataInt("sizeNotif")
+                        val sizeNotif = sharedPrefData.callDataInt("sizeNotif") + 1
 
                         if (newData != null) {
                             if (currentTime - lastNotificationTime >= 10000 && newData.suhu >= 35f) {
