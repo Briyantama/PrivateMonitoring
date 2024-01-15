@@ -61,7 +61,6 @@ class DateSelectFragment : Fragment() {
                         value.children.forEach { nilai ->
                             val newData = nilai.key.toString()
                             listDate.add(newData)
-                            Log.d(TAG, "tanggal: $newData")
                         }
                     }
 

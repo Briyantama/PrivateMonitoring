@@ -10,11 +10,14 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="red">#FF0000</color>
-    <color name="green">#73CA5C</color>
     <color name="grey">#646464</color>
     <color name="blue">#0094D9</color>
     <color name="pressed_grey">#D0D0D0</color>
     <color name="colorAccent">#FF4081</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="white_akar">#FFFEF7</color>
+    <color name="lime_green">#88CA5E</color>
+    <color name="green">#1D741B</color>
+    <color name="rose">#F1C0B9</color>
+    <color name="neo_green">#D2FBA4</color>
 </resources>

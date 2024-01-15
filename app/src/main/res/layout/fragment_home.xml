@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="8dp"
-        android:backgroundTint="@color/white"
+        android:background="@color/white_akar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -20,7 +20,7 @@
             android:id="@+id/spinner_home"
             android:layout_width="280dp"
             android:layout_height="48dp"
-            android:backgroundTint="@color/fade_purple"
+            android:backgroundTint="@color/green"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/iv_history"
             app:layout_constraintHorizontal_bias="0.5"
@@ -37,7 +37,7 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/spinner_home"
             app:layout_constraintTop_toTopOf="parent"
-            app:tint="@color/fade_purple" />
+            app:tint="@color/green" />
 
         <ImageView
             android:id="@+id/iv_notif"
@@ -49,7 +49,7 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/iv_history"
             app:layout_constraintTop_toTopOf="parent"
-            app:tint="@color/fade_purple" />
+            app:tint="@color/green" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ScrollView
@@ -73,6 +73,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 app:cardCornerRadius="24dp"
+                android:background="@color/white_akar"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
@@ -89,8 +90,8 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/roboto_medium"
                         android:text="@string/nilai_sekarang"
-                        android:textColor="@color/fade_purple"
-                        android:textSize="24sp"
+                        android:textColor="@color/green"
+                        android:textSize="33sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -100,8 +101,8 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/roboto_medium"
                         android:text="@string/suhu"
-                        android:textColor="@color/fade_purple"
-                        android:textSize="24sp"
+                        android:textColor="@color/green"
+                        android:textSize="26sp"
                         app:layout_constraintBottom_toBottomOf="@+id/tv_data_now"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="@+id/tv_data_now" />
@@ -113,7 +114,7 @@
                         android:layout_marginTop="16dp"
                         android:fontFamily="@font/roboto_medium"
                         android:text="@string/current_in"
-                        android:textColor="@color/fade_purple"
+                        android:textColor="@color/green"
                         android:textSize="16sp"
                         app:layout_constraintStart_toStartOf="@+id/tv_data_now"
                         app:layout_constraintTop_toBottomOf="@+id/tv_data_now" />
@@ -125,8 +126,8 @@
                         android:layout_marginTop="8dp"
                         android:fontFamily="@font/roboto_medium"
                         android:text="@string/current_in"
-                        android:textColor="@color/fade_purple"
-                        android:textSize="24sp"
+                        android:textColor="@color/green"
+                        android:textSize="26sp"
                         app:layout_constraintStart_toStartOf="@+id/tv_arus_masuk"
                         app:layout_constraintTop_toBottomOf="@+id/tv_arus_masuk" />
 
@@ -137,7 +138,7 @@
                         android:layout_marginTop="16dp"
                         android:fontFamily="@font/roboto_medium"
                         android:text="@string/current_out"
-                        android:textColor="@color/fade_purple"
+                        android:textColor="@color/green"
                         android:textSize="16sp"
                         app:layout_constraintStart_toStartOf="@+id/show_arus_masuk"
                         app:layout_constraintTop_toBottomOf="@+id/show_arus_masuk" />
@@ -149,8 +150,8 @@
                         android:layout_marginTop="8dp"
                         android:fontFamily="@font/roboto_medium"
                         android:text="@string/current_out"
-                        android:textColor="@color/fade_purple"
-                        android:textSize="24sp"
+                        android:textColor="@color/green"
+                        android:textSize="26sp"
                         app:layout_constraintStart_toStartOf="@+id/tv_arus_keluar"
                         app:layout_constraintTop_toBottomOf="@+id/tv_arus_keluar" />
 
@@ -160,7 +161,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/roboto_medium"
                         android:text="@string/tegangan"
-                        android:textColor="@color/fade_purple"
+                        android:textColor="@color/green"
                         android:textSize="16sp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/tv_data_now"
@@ -172,8 +173,8 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/roboto_medium"
                         android:text="@string/tegangan"
-                        android:textColor="@color/fade_purple"
-                        android:textSize="24sp"
+                        android:textColor="@color/green"
+                        android:textSize="26sp"
                         app:layout_constraintStart_toStartOf="@+id/tv_tegangan"
                         app:layout_constraintTop_toTopOf="@+id/show_arus_masuk" />
 
@@ -183,7 +184,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/roboto_medium"
                         android:text="@string/SoC"
-                        android:textColor="@color/fade_purple"
+                        android:textColor="@color/green"
                         android:textSize="16sp"
                         app:layout_constraintStart_toStartOf="@+id/show_tegangan"
                         app:layout_constraintTop_toTopOf="@+id/tv_arus_keluar" />
@@ -194,8 +195,8 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/roboto_medium"
                         android:text="@string/SoC"
-                        android:textColor="@color/fade_purple"
-                        android:textSize="24sp"
+                        android:textColor="@color/green"
+                        android:textSize="26sp"
                         app:layout_constraintStart_toStartOf="@+id/tv_tegangan"
                         app:layout_constraintTop_toTopOf="@+id/show_arus_keluar" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -208,8 +209,8 @@
                 android:layout_margin="16dp"
                 android:fontFamily="@font/roboto_medium"
                 android:text="@string/grafik_tegangan"
-                android:textColor="@color/fade_purple"
-                android:textSize="24sp"
+                android:textColor="@color/green"
+                android:textSize="26sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/nilai" />
@@ -232,8 +233,8 @@
                 android:layout_margin="16dp"
                 android:fontFamily="@font/roboto_medium"
                 android:text="@string/grafik_arus_masuk"
-                android:textColor="@color/fade_purple"
-                android:textSize="24sp"
+                android:textColor="@color/green"
+                android:textSize="26sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/graphVolt" />
@@ -256,8 +257,8 @@
                 android:layout_margin="16dp"
                 android:fontFamily="@font/roboto_medium"
                 android:text="@string/grafik_arus_keluar"
-                android:textColor="@color/fade_purple"
-                android:textSize="24sp"
+                android:textColor="@color/green"
+                android:textSize="26sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/graphCurrentIn" />
@@ -280,8 +281,8 @@
                 android:layout_margin="16dp"
                 android:fontFamily="@font/roboto_medium"
                 android:text="@string/grafik_soc"
-                android:textColor="@color/fade_purple"
-                android:textSize="24sp"
+                android:textColor="@color/green"
+                android:textSize="26sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/graphCurrentOut" />

@@ -1,15 +1,18 @@
 package com.elektro.monitoring.ui.data
 
+import android.R
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TableLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.request.RequestOptions
 import com.elektro.monitoring.databinding.FragmentDataShowBinding
 import com.elektro.monitoring.helper.Constants.TAG
 import com.elektro.monitoring.helper.sharedpref.SharedPrefData
@@ -22,6 +25,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
+
 
 @AndroidEntryPoint
 class DataShowFragment : Fragment() {
@@ -39,6 +43,16 @@ class DataShowFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentDataShowBinding.inflate(inflater, container, false)
+        val dateselect = sharedPrefData.callDataString("dateSelect")
+
+        binding.horizontalScroll.isHorizontalScrollBarEnabled = false
+        binding.verticalScroll.isVerticalScrollBarEnabled = false
+        binding.tableData.dividerDrawable = resources.getDrawable(R.drawable.divider_horizontal_bright)
+        binding.tableData.showDividers = TableLayout.SHOW_DIVIDER_BEGINNING or
+                TableLayout.SHOW_DIVIDER_MIDDLE or TableLayout.SHOW_DIVIDER_END
+
+        binding.tvDate.text = dateselect
+
         return binding.root
     }
 

@@ -17,7 +17,7 @@
         android:src="@drawable/ic_baseline_arrow_back_24"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:tint="@color/fade_purple" />
+        app:tint="@color/green" />
 
     <TextView
         android:id="@+id/tv_date"
@@ -25,18 +25,20 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/roboto_bold"
         android:text="@string/date"
-        android:textColor="@color/fade_purple"
-        android:textSize="24sp"
+        android:textColor="@color/green"
+        android:textSize="26sp"
         app:layout_constraintBottom_toBottomOf="@id/btn_back"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/btn_back" />
 
     <HorizontalScrollView
+        android:id="@+id/horizontal_scroll"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_date">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -47,54 +49,58 @@
                 android:id="@+id/table_data"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:divider="?android:attr/dividerHorizontal"
+                android:stretchColumns="5"
+                android:showDividers="beginning|middle|end"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <TableRow>
                     <TextView
-                        android:layout_width="96dp"
+                        android:layout_width="104dp"
                         android:text="@string/current_in"
                         android:textColor="@color/black"
                         android:textSize="16sp"
                         android:gravity="center"
-                        android:padding="4dp"
+                        android:padding="8dp"
                         android:fontFamily="@font/roboto_bold"/>
                     <TextView
-                        android:layout_width="96dp"
+                        android:layout_width="104dp"
                         android:text="@string/current_out"
                         android:textColor="@color/black"
                         android:textSize="16sp"
                         android:gravity="center"
-                        android:padding="4dp"
+                        android:padding="8dp"
                         android:fontFamily="@font/roboto_bold"/>
                     <TextView
-                        android:layout_width="96dp"
+                        android:layout_width="104dp"
                         android:text="@string/tegangan"
                         android:textColor="@color/black"
                         android:textSize="16sp"
                         android:gravity="center"
-                        android:padding="4dp"
+                        android:padding="8dp"
                         android:fontFamily="@font/roboto_bold"/>
                     <TextView
-                        android:layout_width="48dp"
+                        android:layout_width="78dp"
                         android:text="@string/SoC"
                         android:textColor="@color/black"
                         android:textSize="16sp"
                         android:gravity="center"
-                        android:padding="4dp"
+                        android:padding="8dp"
                         android:fontFamily="@font/roboto_bold"/>
                     <TextView
-                        android:layout_width="144dp"
+                        android:layout_width="156dp"
                         android:text="@string/time"
                         android:textColor="@color/black"
                         android:textSize="16sp"
                         android:gravity="center"
-                        android:padding="4dp"
+                        android:padding="8dp"
                         android:fontFamily="@font/roboto_bold"/>
                 </TableRow>
             </TableLayout>
 
             <ScrollView
+                android:id="@+id/vertical_scroll"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 app:layout_constraintStart_toStartOf="parent"

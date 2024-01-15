@@ -36,4 +36,5 @@
     <string name="select_date">Select Date</string>
     <string name="date">date</string>
     <string name="time">Time</string>
+    <string name="please_login_with_your_information">Please login with your information</string>
 </resources>

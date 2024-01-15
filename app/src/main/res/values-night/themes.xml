@@ -3,10 +3,9 @@
     <style name="Base.Theme.Monitoring" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/fade_purple</item>
-        <item name="colorPrimaryVariant">@color/fade_purple</item>
-        <item name="colorOnPrimary">@color/white_akar</item>
-        <item name="android:windowBackground">@color/white_akar</item>
+        <item name="colorPrimary">@color/green</item>
+        <item name="colorPrimaryVariant">@color/green</item>
+        <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
         <item name="colorSecondaryVariant">@color/teal_700</item>

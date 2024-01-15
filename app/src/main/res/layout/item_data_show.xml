@@ -1,53 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:divider="?android:attr/dividerHorizontal"
+    android:stretchColumns="5"
+    android:showDividers="beginning|middle|end"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
     <TableRow>
         <TextView
             android:id="@+id/data_current_in"
-            android:layout_width="96dp"
+            android:layout_width="104dp"
+            android:layout_height="wrap_content"
             android:text="@string/current_in"
             android:textColor="@color/black"
             android:textSize="16sp"
             android:gravity="center"
-            android:padding="4dp"
+            android:padding="8dp"
             android:fontFamily="@font/roboto_medium"/>
         <TextView
             android:id="@+id/data_current_out"
-            android:layout_width="96dp"
+            android:layout_width="104dp"
             android:text="@string/current_out"
             android:textColor="@color/black"
             android:textSize="16sp"
             android:gravity="center"
-            android:padding="4dp"
+            android:padding="8dp"
             android:fontFamily="@font/roboto_medium"/>
         <TextView
             android:id="@+id/data_tegangan"
-            android:layout_width="96dp"
+            android:layout_width="104dp"
             android:text="@string/tegangan"
             android:textColor="@color/black"
             android:textSize="16sp"
             android:gravity="center"
-            android:padding="4dp"
+            android:padding="8dp"
             android:fontFamily="@font/roboto_medium"/>
         <TextView
             android:id="@+id/data_soc"
-            android:layout_width="48dp"
+            android:layout_width="78dp"
             android:text="@string/SoC"
             android:textColor="@color/black"
             android:textSize="16sp"
             android:gravity="center"
-            android:padding="4dp"
+            android:padding="8dp"
             android:fontFamily="@font/roboto_medium"/>
         <TextView
             android:id="@+id/data_time"
-            android:layout_width="144dp"
+            android:layout_width="156dp"
             android:text="@string/time"
             android:textColor="@color/black"
             android:textSize="16sp"
             android:gravity="center"
-            android:padding="4dp"
+            android:padding="8dp"
             android:fontFamily="@font/roboto_medium"/>
     </TableRow>
 </TableLayout>

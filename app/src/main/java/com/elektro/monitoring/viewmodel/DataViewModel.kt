@@ -165,9 +165,8 @@ class DataViewModel @Inject constructor(private val sharedPrefData: SharedPrefDa
             sizeDate+=1
         }
 
-        fireDatabase.getReference("panels").child("Solar A")
-            .child(sizeDate.toString()).child(date)
-            .child(sizeData.toString()).setValue(data10Min)
+        fireDatabase.getReference("panels/Solar A/$sizeDate/$date/$sizeData")
+            .setValue(data10Min)
     }
 
     private fun postToFirebase1Sec(

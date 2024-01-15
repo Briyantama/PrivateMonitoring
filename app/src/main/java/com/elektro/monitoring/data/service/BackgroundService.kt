@@ -21,6 +21,7 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 import javax.inject.Inject
+import kotlin.math.tan
 
 @AndroidEntryPoint
 class BackgroundService: Service() {
@@ -76,8 +77,8 @@ class BackgroundService: Service() {
                     }
                 })
 
-            fireDatabase.getReference("panels").child("Solar A")
-                .limitToLast(1).addValueEventListener(object : ValueEventListener{
+            fireDatabase.getReference("panels/Solar A").limitToLast(1)
+                .addValueEventListener(object : ValueEventListener{
                     override fun onDataChange(snapshot: DataSnapshot) {
                         for (childSnapshot in snapshot.children) {
                             childSnapshot.children.forEach {value ->
@@ -94,9 +95,8 @@ class BackgroundService: Service() {
                     }
                 })
 
-            fireDatabase.getReference("panels").child(selectedPanel)
-                .child(sizeDate.toString()).child(tanggal).limitToLast(1)
-                .addValueEventListener(object : ValueEventListener {
+            fireDatabase.getReference("panels/$selectedPanel/$sizeDate/$tanggal")
+                .limitToLast(1).addValueEventListener(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
                         sharedPrefData.editDataInt("sizeData", snapshot.childrenCount.toInt())
                     }
