@@ -12,8 +12,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.Navigation
 import com.elektro.monitoring.R
 import com.elektro.monitoring.databinding.FragmentLoginBinding
-import com.elektro.monitoring.helper.utils.showSnackbar
-import com.elektro.monitoring.helper.utils.showToast
+import com.elektro.monitoring.helper.utils.showToastWithoutIcon
 import com.elektro.monitoring.viewmodel.AuthViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -38,10 +37,10 @@ class LoginFragment : Fragment() {
             lifecycle.repeatOnLifecycle(Lifecycle.State.CREATED) {
                 authViewModel.user.collect {
                     if (it.error.isNotBlank()) {
-                        requireContext().showToast(it.error)
+                        requireContext().showToastWithoutIcon(it.error)
                     }
                     it.data?.let {
-                        binding.cardView.showSnackbar("User has successfully logged in")
+                        requireContext().showToastWithoutIcon("User has successfully logged in")
                         Navigation.findNavController(requireView())
                             .navigate(R.id.action_loginFragment_to_homeFragment)
                     }

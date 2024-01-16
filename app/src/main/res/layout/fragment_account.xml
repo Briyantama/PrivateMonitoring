@@ -7,13 +7,13 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         tools:context=".ui.account.AccountFragment">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardView"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="-24dp"
             app:cardCornerRadius="24dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -25,7 +25,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:padding="24dp"
-                android:background="@color/lime_green">
+                android:background="@color/green">
 
                 <ImageView
                     android:id="@+id/iv_profile"
@@ -43,10 +43,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:fontFamily="@font/roboto_medium"
-                    android:text="@string/nama"
-                    android:textColor="@color/green"
                     android:maxLines="1"
-                    android:textSize="20sp"
+                    android:text="@string/nama"
+                    android:textColor="@color/white"
+                    android:textSize="26sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="@+id/iv_profile"
                     app:layout_constraintStart_toStartOf="@+id/iv_profile"
                     app:layout_constraintTop_toBottomOf="@+id/iv_profile" />
@@ -58,7 +59,6 @@
             android:id="@+id/register"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             android:background="@color/on_click"
             android:padding="8dp"
             android:visibility="gone"
@@ -96,7 +96,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="4dp"
                 android:layout_marginTop="16dp"
-                android:background="@color/lime_green"
+                android:background="@color/green"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -107,7 +107,6 @@
             android:id="@+id/my_profile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             android:background="@color/on_click"
             android:padding="8dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -144,7 +143,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="4dp"
                 android:layout_marginTop="16dp"
-                android:background="@color/lime_green"
+                android:background="@color/green"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -155,7 +154,6 @@
             android:id="@+id/change_pass"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             android:background="@color/on_click"
             android:padding="8dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -192,7 +190,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="4dp"
                 android:layout_marginTop="16dp"
-                android:background="@color/lime_green"
+                android:background="@color/green"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -203,7 +201,6 @@
             android:id="@+id/log_out"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             android:background="@color/on_click"
             android:padding="8dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -240,7 +237,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="4dp"
                 android:layout_marginTop="16dp"
-                android:background="@color/lime_green"
+                android:background="@color/green"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

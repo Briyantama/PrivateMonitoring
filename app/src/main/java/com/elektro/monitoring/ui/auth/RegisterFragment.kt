@@ -2,8 +2,6 @@ package com.elektro.monitoring.ui.auth
 
 import android.net.Uri
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,13 +13,10 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
-import com.elektro.monitoring.app.MainActivity
 import com.elektro.monitoring.databinding.FragmentRegisterBinding
 import com.elektro.monitoring.helper.utils.loadImage
-import com.elektro.monitoring.helper.utils.showSnackbar
-import com.elektro.monitoring.helper.utils.showToast
+import com.elektro.monitoring.helper.utils.showToastWithoutIcon
 import com.elektro.monitoring.viewmodel.AuthViewModel
-import com.elektro.monitoring.viewmodel.DataViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -67,12 +62,12 @@ class RegisterFragment : Fragment() {
                 authViewModel.shouldNavigateUp.observe(viewLifecycleOwner)
                 { navigateUp ->
                     if (navigateUp == true) {
-                        binding.root.showSnackbar("Register Successful")
+                        requireContext().showToastWithoutIcon("Register Successful")
                         findNavController().navigateUp()}
                 }
                 authViewModel.check.collect {
                     if (it.error.isNotBlank()) {
-                        requireContext().showToast(it.error)
+                        requireContext().showToastWithoutIcon(it.error)
                     }
                 }
             }
@@ -84,7 +79,7 @@ class RegisterFragment : Fragment() {
 
         binding.btnRegister.setOnClickListener {
             if (authViewModel.file.value == null){
-                requireContext().showToast("Please input image")
+                requireContext().showToastWithoutIcon("Please input image")
             }
         }
 

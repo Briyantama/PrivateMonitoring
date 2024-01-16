@@ -12,7 +12,7 @@
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:scaleType="fitXY"
         android:src="@drawable/ic_baseline_arrow_back_24"
         app:layout_constraintStart_toStartOf="parent"
@@ -32,79 +32,114 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/btn_back" />
 
-    <HorizontalScrollView
-        android:id="@+id/horizontal_scroll"
+    <TextView
+        android:id="@+id/tv_panel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:fontFamily="@font/roboto_bold"
+        android:text="Pilih Panel Surya"
+        android:textColor="@color/green"
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_back" />
+
+    <Spinner
+        android:id="@+id/spinner_date_select"
+        android:layout_width="280dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="@color/green"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_panel" />
+
+    <ScrollView
+        android:id="@+id/vertical_scroll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_date">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/spinner_date_select">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-            <TableLayout
-                android:id="@+id/table_data"
-                android:layout_width="match_parent"
+            <HorizontalScrollView
+                android:id="@+id/horizontal_scroll"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:divider="?android:attr/dividerHorizontal"
-                android:stretchColumns="5"
-                android:showDividers="beginning|middle|end"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <TableRow>
-                    <TextView
-                        android:layout_width="104dp"
-                        android:text="@string/current_in"
-                        android:textColor="@color/black"
-                        android:textSize="16sp"
-                        android:gravity="center"
-                        android:padding="8dp"
-                        android:fontFamily="@font/roboto_bold"/>
-                    <TextView
-                        android:layout_width="104dp"
-                        android:text="@string/current_out"
-                        android:textColor="@color/black"
-                        android:textSize="16sp"
-                        android:gravity="center"
-                        android:padding="8dp"
-                        android:fontFamily="@font/roboto_bold"/>
-                    <TextView
-                        android:layout_width="104dp"
-                        android:text="@string/tegangan"
-                        android:textColor="@color/black"
-                        android:textSize="16sp"
-                        android:gravity="center"
-                        android:padding="8dp"
-                        android:fontFamily="@font/roboto_bold"/>
-                    <TextView
-                        android:layout_width="78dp"
-                        android:text="@string/SoC"
-                        android:textColor="@color/black"
-                        android:textSize="16sp"
-                        android:gravity="center"
-                        android:padding="8dp"
-                        android:fontFamily="@font/roboto_bold"/>
-                    <TextView
-                        android:layout_width="156dp"
-                        android:text="@string/time"
-                        android:textColor="@color/black"
-                        android:textSize="16sp"
-                        android:gravity="center"
-                        android:padding="8dp"
-                        android:fontFamily="@font/roboto_bold"/>
-                </TableRow>
-            </TableLayout>
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent">
 
-            <ScrollView
-                android:id="@+id/vertical_scroll"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/table_data">
+                    <TableLayout
+                        android:id="@+id/table_data"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:divider="?android:attr/dividerHorizontal"
+                        android:showDividers="beginning|middle|end"
+                        android:stretchColumns="5"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <TableRow>
+
+                            <TextView
+                                android:layout_width="104dp"
+                                android:fontFamily="@font/roboto_bold"
+                                android:gravity="center"
+                                android:padding="8dp"
+                                android:text="@string/current_in"
+                                android:textColor="@color/black"
+                                android:textSize="16sp" />
+
+                            <TextView
+                                android:layout_width="104dp"
+                                android:fontFamily="@font/roboto_bold"
+                                android:gravity="center"
+                                android:padding="8dp"
+                                android:text="@string/current_out"
+                                android:textColor="@color/black"
+                                android:textSize="16sp" />
+
+                            <TextView
+                                android:layout_width="104dp"
+                                android:fontFamily="@font/roboto_bold"
+                                android:gravity="center"
+                                android:padding="8dp"
+                                android:text="@string/tegangan"
+                                android:textColor="@color/black"
+                                android:textSize="16sp" />
+
+                            <TextView
+                                android:layout_width="78dp"
+                                android:fontFamily="@font/roboto_bold"
+                                android:gravity="center"
+                                android:padding="8dp"
+                                android:text="@string/SoC"
+                                android:textColor="@color/black"
+                                android:textSize="16sp" />
+
+                            <TextView
+                                android:layout_width="156dp"
+                                android:fontFamily="@font/roboto_bold"
+                                android:gravity="center"
+                                android:padding="8dp"
+                                android:text="@string/time"
+                                android:textColor="@color/black"
+                                android:textSize="16sp" />
+                        </TableRow>
+                    </TableLayout>
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_data_show"
@@ -112,8 +147,104 @@
                         android:layout_height="wrap_content"
                         android:clipToPadding="true"
                         android:orientation="vertical"
+                        app:layout_constraintTop_toBottomOf="@id/table_data"
                         tools:listitem="@layout/item_data_show" />
-            </ScrollView>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </HorizontalScrollView>
+
+            <TextView
+                android:id="@+id/tv_graph_volt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/roboto_medium"
+                android:text="@string/grafik_tegangan"
+                android:textColor="@color/green"
+                android:textSize="26sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/horizontal_scroll" />
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/graphVolt"
+                android:layout_width="match_parent"
+                android:layout_height="240dp"
+                android:layout_marginTop="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_graph_volt" />
+
+            <TextView
+                android:id="@+id/tv_graph_arus_masuk"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/roboto_medium"
+                android:text="@string/grafik_arus_masuk"
+                android:textColor="@color/green"
+                android:textSize="26sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/graphVolt" />
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/graphCurrentIn"
+                android:layout_width="match_parent"
+                android:layout_height="240dp"
+                android:layout_marginTop="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_graph_arus_masuk" />
+
+            <TextView
+                android:id="@+id/tv_graph_arus_keluar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/roboto_medium"
+                android:text="@string/grafik_arus_keluar"
+                android:textColor="@color/green"
+                android:textSize="26sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/graphCurrentIn" />
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/graphCurrentOut"
+                android:layout_width="match_parent"
+                android:layout_height="240dp"
+                android:layout_marginTop="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_graph_arus_keluar" />
+
+            <TextView
+                android:id="@+id/tv_graph_soc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/roboto_medium"
+                android:text="@string/grafik_soc"
+                android:textColor="@color/green"
+                android:textSize="26sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/graphCurrentOut" />
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/graphSoC"
+                android:layout_width="match_parent"
+                android:layout_height="240dp"
+                android:layout_marginTop="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_graph_soc" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="176dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/graphSoC" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </HorizontalScrollView>
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -104,8 +104,7 @@
                         android:textColor="@color/green"
                         android:textSize="26sp"
                         app:layout_constraintBottom_toBottomOf="@+id/tv_data_now"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/tv_data_now" />
+                        app:layout_constraintEnd_toEndOf="parent" />
 
                     <TextView
                         android:id="@+id/tv_arus_masuk"
@@ -163,7 +162,6 @@
                         android:text="@string/tegangan"
                         android:textColor="@color/green"
                         android:textSize="16sp"
-                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/tv_data_now"
                         app:layout_constraintTop_toTopOf="@+id/tv_arus_masuk" />
 

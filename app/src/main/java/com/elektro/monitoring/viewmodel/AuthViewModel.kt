@@ -94,10 +94,10 @@ class AuthViewModel @Inject constructor(private val authRepository: AuthReposito
         val isValidPassword = Valid.isValidPassword(password.value.toString().trim())
 
         if(!isValidEmail && !isValidPassword){
-            error.passwordErrorMessage = "Please Enter Valid Password"
+            error.passwordErrorMessage = "Password Harus Memiliki 8 Karakter dan Minimal 1 angka dan 1 Simbol"
             error.emailErrorMessage = "Please Enter Valid Email"
         } else if(!isValidPassword){
-            error.passwordErrorMessage = "Please Enter Valid Password"
+            error.passwordErrorMessage = "Password Harus Memiliki 8 Karakter dan Minimal 1 angka dan 1 Simbol"
         } else if(!isValidEmail){
             error.emailErrorMessage = "Please Enter Valid Email"
         }
@@ -115,14 +115,14 @@ class AuthViewModel @Inject constructor(private val authRepository: AuthReposito
             error.newPasswordErrorMessage = "New password cannot be the same as the old password."
         } else {
             if (!isCurrentPassword && !isNewPassword) {
-                error.passwordErrorMessage = "Please Enter Valid Password."
-                error.newPasswordErrorMessage = "Please Enter Valid Password."
-                error.confirmPasswordErrorMessage = "Please Enter Valid Password."
+                error.passwordErrorMessage = "Password Harus Memiliki 8 Karakter dan Minimal 1 angka dan 1 Simbol."
+                error.newPasswordErrorMessage = "Password Harus Memiliki 8 Karakter dan Minimal 1 angka dan 1 Simbol."
+                error.confirmPasswordErrorMessage = "Password Harus Memiliki 8 Karakter dan Minimal 1 angka dan 1 Simbol."
             } else if (!isNewPassword) {
-                error.newPasswordErrorMessage = "Please Enter Valid Password."
-                error.confirmPasswordErrorMessage = "Please Enter Valid Password."
+                error.newPasswordErrorMessage = "Password Harus Memiliki 8 Karakter dan Minimal 1 angka dan 1 Simbol."
+                error.confirmPasswordErrorMessage = "Password Harus Memiliki 8 Karakter dan Minimal 1 angka dan 1 Simbol."
             } else if (!isCurrentPassword) {
-                error.passwordErrorMessage = "Please Enter Valid Password."
+                error.passwordErrorMessage = "Password Harus Memiliki 8 Karakter dan Minimal 1 angka dan 1 Simbol."
             }
         }
         errorModel.value = error
@@ -136,10 +136,10 @@ class AuthViewModel @Inject constructor(private val authRepository: AuthReposito
         val isValidPassword = Valid.isValidPassword(newPassword.value.toString().trim())
 
         if(!isValidEmail && !isValidPassword){
-            error.passwordErrorMessage = "Please Enter Valid Password"
+            error.passwordErrorMessage = "Password Harus Memiliki 8 Karakter dan Minimal 1 angka dan 1 Simbol"
             error.emailErrorMessage = "Please Enter Valid Email"
         } else if(!isValidPassword){
-            error.passwordErrorMessage = "Please Enter Valid Password"
+            error.passwordErrorMessage = "Password Harus Memiliki 8 Karakter dan Minimal 1 angka dan 1 Simbol"
         } else if(!isValidEmail){
             error.emailErrorMessage = "Please Enter Valid Email"
         }

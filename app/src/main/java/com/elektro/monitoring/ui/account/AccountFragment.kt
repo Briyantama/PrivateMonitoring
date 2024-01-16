@@ -14,8 +14,7 @@ import com.elektro.monitoring.R
 import com.elektro.monitoring.databinding.FragmentAccountBinding
 import com.elektro.monitoring.helper.utils.dialogPN
 import com.elektro.monitoring.helper.utils.loadImage
-import com.elektro.monitoring.helper.utils.showSnackbar
-import com.elektro.monitoring.helper.utils.showToast
+import com.elektro.monitoring.helper.utils.showToastWithoutIcon
 import com.elektro.monitoring.viewmodel.AuthViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -43,7 +42,7 @@ class AccountFragment : Fragment() {
             lifecycle.repeatOnLifecycle(Lifecycle.State.CREATED) {
                 authViewModel.userData.collect {
                     if (it.error.isNotBlank()) {
-                        requireContext().showToast(it.error)
+                        requireContext().showToastWithoutIcon(it.error)
                     }
                     if (it.data != null) {
                         it.data.let { user ->
@@ -84,7 +83,7 @@ class AccountFragment : Fragment() {
             requireContext().dialogPN("Log Out", "Are you sure?", "Yes", "No"){
                 authViewModel.logOut()
                 authViewModel.service.postValue(false)
-                binding.ivProfile.showSnackbar("User has successfully logged out")
+                requireContext().showToastWithoutIcon("User has successfully logged out")
                 Navigation.findNavController(view)
                     .navigate(R.id.action_akunFragment_to_splashFragment)
             }

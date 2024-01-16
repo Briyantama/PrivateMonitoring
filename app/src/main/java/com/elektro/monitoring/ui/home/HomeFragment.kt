@@ -49,7 +49,7 @@ class HomeFragment : Fragment() {
     private val mTegangan: MutableList<Entry> = mutableListOf()
     private val mSoC: MutableList<Entry> = mutableListOf()
 
-    val options = ArrayList<String>()
+    private val options = ArrayList<String>()
 
     private val tf = SimpleDateFormat("EEEE, dd-MMMM-yyyy", Locale.getDefault())
     private val tanggal: String = tf.format(Calendar.getInstance().time)
@@ -125,7 +125,6 @@ class HomeFragment : Fragment() {
 
                             snapshot.children.forEach { value ->
                                 val newData = value.getValue(Data10Min::class.java)
-                                Log.d(TAG, "onDataChange: $newData")
                                 newData?.let { listData.add(it) }
                             }
 

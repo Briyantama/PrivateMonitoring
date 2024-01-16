@@ -37,4 +37,8 @@
     <string name="date">date</string>
     <string name="time">Time</string>
     <string name="please_login_with_your_information">Please login with your information</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="register_account">Register Account</string>
+    <string name="nama_lengkap">Nama Lengkap</string>
+    <string name="nomor_handphone">Nomor Handphone</string>
 </resources>

@@ -3,7 +3,6 @@ package com.elektro.monitoring.ui.data
 import android.app.Application
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +11,6 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.elektro.monitoring.databinding.FragmentDateSelectBinding
-import com.elektro.monitoring.helper.Constants.TAG
 import com.elektro.monitoring.helper.sharedpref.SharedPrefData
 import com.elektro.monitoring.ui.adapter.DateAdapter
 import com.elektro.monitoring.viewmodel.DataViewModel
@@ -52,7 +50,7 @@ class DateSelectFragment : Fragment() {
         super.onResume()
         val selectedPanel =  sharedPrefData.callDataString("selectedpanel")
 
-        fireDatabase.getReference("panels").child(selectedPanel)
+        fireDatabase.getReference("panels/$selectedPanel")
             .addValueEventListener(object : ValueEventListener{
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val listDate: MutableList<String> = mutableListOf()

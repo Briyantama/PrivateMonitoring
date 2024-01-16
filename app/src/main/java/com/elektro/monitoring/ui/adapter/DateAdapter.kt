@@ -17,9 +17,8 @@ class DateAdapter(private val itemList: List<String>, application: Application)
         fun bind(text: String, position: Int){
             binding.date.text = text
             binding.tanggal.setOnClickListener {
-                val selectedPanel =  sharedPrefData.callDataString("selectedpanel")
                 sharedPrefData.editDataString("dateSelect", text)
-                sharedPrefData.editDataString("dataRef", "panels/$selectedPanel/$position/$text")
+                sharedPrefData.editDataString("dataRef", "$position/$text")
                 Navigation.findNavController(binding.root)
                     .navigate(R.id.action_dateSelectFragment_to_dataShowFragment)
             }

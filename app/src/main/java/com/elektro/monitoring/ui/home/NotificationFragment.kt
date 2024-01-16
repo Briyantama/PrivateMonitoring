@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.elektro.monitoring.databinding.FragmentNotificationBinding
 import com.elektro.monitoring.helper.sharedpref.SharedPrefData
 import com.elektro.monitoring.helper.utils.dialogPN
-import com.elektro.monitoring.helper.utils.showToast
+import com.elektro.monitoring.helper.utils.showToastWithoutIcon
 import com.elektro.monitoring.model.NotifikasiSuhu
 import com.elektro.monitoring.ui.adapter.NotifAdapter
 import com.elektro.monitoring.viewmodel.DataViewModel
@@ -51,9 +51,9 @@ class NotificationFragment : Fragment() {
                 fireDatabase.getReference("notif").removeValue()
                     .addOnSuccessListener {
                         sharedPrefData.editDataInt("sizeNotif", 0)
-                        requireContext().showToast("Semua notifikasi berhasil dihapus")
+                        requireContext().showToastWithoutIcon("Semua notifikasi berhasil dihapus")
                     }.addOnFailureListener { e ->
-                        requireContext().showToast("Gagal menghapus notifikasi \n${e.message}")
+                        requireContext().showToastWithoutIcon("Gagal menghapus notifikasi \n${e.message}")
                     }
             }
         }

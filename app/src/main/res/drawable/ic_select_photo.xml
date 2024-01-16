@@ -4,16 +4,16 @@
     android:viewportWidth="96"
     android:viewportHeight="96">
     <path
-        android:fillColor="#FFE2D4F0"
+        android:fillColor="@color/neo_green"
         android:pathData="M0 12c0-6.63 5.37-12 12-12h72c6.63 0 12 5.37 12 12v72c0 6.63-5.37 12-12 12h-72c-6.63 0-12-5.37-12-12z"/>
     <path
-        android:strokeColor="@color/fade_purple"
+        android:strokeColor="@color/green"
         android:strokeWidth="2"
         android:strokeLineCap="round"
         android:strokeLineJoin="round"
         android:pathData="M59 55c0 0.53-0.21 1.04-0.59 1.41C58.04 56.8 57.53 57 57 57H39c-0.53 0-1.04-0.21-1.41-0.59C37.2 56.04 37 55.53 37 55V44c0-0.53 0.21-1.04 0.59-1.41C37.96 42.2 38.47 42 39 42h4l2-3h6l2 3h4c0.53 0 1.04 0.21 1.41 0.59C58.8 42.96 59 43.47 59 44v11Z"/>
     <path
-        android:strokeColor="@color/fade_purple"
+        android:strokeColor="@color/green"
         android:strokeWidth="2"
         android:strokeLineCap="round"
         android:strokeLineJoin="round"

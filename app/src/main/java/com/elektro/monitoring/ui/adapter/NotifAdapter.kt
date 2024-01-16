@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.elektro.monitoring.databinding.ItemNotifBinding
-import com.elektro.monitoring.helper.utils.showToast
+import com.elektro.monitoring.helper.utils.showToastWithoutIcon
 import com.elektro.monitoring.model.NotifikasiSuhu
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -28,9 +28,9 @@ class NotifAdapter(private val itemList: List<NotifikasiSuhu>, private val conte
                                 for (childSnapshot in snapshot.children) {
                                     childSnapshot.ref.removeValue()
                                         .addOnSuccessListener {
-                                            context.showToast("Notifikasi ini berhasil dihapus")
+                                            context.showToastWithoutIcon("Notifikasi ini berhasil dihapus")
                                         }.addOnFailureListener { e ->
-                                            context.showToast("Gagal menghapus notifikasi \n${e.message}")
+                                            context.showToastWithoutIcon("Gagal menghapus notifikasi \n${e.message}")
                                         }
                                 }
                             }
