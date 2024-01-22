@@ -11,6 +11,10 @@ import com.elektro.monitoring.data.repo.AuthRepository
 import com.elektro.monitoring.helper.Valid
 import com.elektro.monitoring.helper.utils.Resource
 import com.elektro.monitoring.model.ErrorModel
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -41,6 +45,8 @@ class AuthViewModel @Inject constructor(private val authRepository: AuthReposito
     val errorModel: MutableLiveData<ErrorModel> = MutableLiveData()
     var shouldNavigateUp: MutableLiveData<Boolean> = MutableLiveData()
     val service: MutableLiveData<Boolean> = MutableLiveData()
+    val emailExist: MutableLiveData<Boolean> =  MutableLiveData()
+    private val fireDatabase: FirebaseDatabase = FirebaseDatabase.getInstance()
 
     init {
         errorModel.value = ErrorModel()
@@ -111,7 +117,7 @@ class AuthViewModel @Inject constructor(private val authRepository: AuthReposito
         val isCurrentPassword = Valid.isValidPassword(password.value.toString().trim())
         val isNewPassword = Valid.isValidPassword(newPassword.value.toString().trim())
 
-        if (this.password.value == newPassword.value) {
+        if (password.value == newPassword.value) {
             error.newPasswordErrorMessage = "New password cannot be the same as the old password."
         } else {
             if (!isCurrentPassword && !isNewPassword) {
@@ -229,8 +235,33 @@ class AuthViewModel @Inject constructor(private val authRepository: AuthReposito
     }
 
     private fun register() {
-        authRepository.register(email.value.toString(), newPassword.value.toString(),
-            file.value!!, name.value.toString(), nomor.value.toString()).onEach {
+        checkEmail(email.value.toString()) { isEmailExist ->
+            if (!isEmailExist){
+                if (file.value!=null){
+                    authRepository.register(email.value.toString(), newPassword.value.toString(),
+                        file.value!!, name.value.toString(), nomor.value.toString()).onEach {
+                        when (it) {
+                            is Resource.Loading -> {
+                                _check.value = CheckState(isLoading = true)
+                            }
+                            is Resource.Error -> {
+                                _check.value = CheckState(error = it.message ?: "")
+                            }
+                            is Resource.Success -> {
+                                _check.value = CheckState(data = it.data)
+                                shouldNavigateUp.value = it.data!!
+                            }
+                        }
+                    }.launchIn(viewModelScope)
+                }
+            }else{
+                emailExist.postValue(true)
+            }
+        }
+    }
+
+    fun changeData(email: String, name: String, nomor: String) {
+        authRepository.changeData(email, file.value!!, name, nomor).onEach {
             when (it) {
                 is Resource.Loading -> {
                     _check.value = CheckState(isLoading = true)
@@ -244,6 +275,40 @@ class AuthViewModel @Inject constructor(private val authRepository: AuthReposito
                 }
             }
         }.launchIn(viewModelScope)
+    }
+
+    fun changeDataNoUri(email: String, image: String, name: String, nomor: String) {
+        authRepository.changeDataNoUri(email, image, name, nomor).onEach {
+            when (it) {
+                is Resource.Loading -> {
+                    _check.value = CheckState(isLoading = true)
+                }
+                is Resource.Error -> {
+                    _check.value = CheckState(error = it.message ?: "")
+                }
+                is Resource.Success -> {
+                    _check.value = CheckState(data = it.data)
+                    shouldNavigateUp.value = it.data!!
+                }
+            }
+        }.launchIn(viewModelScope)
+    }
+
+
+    private fun checkEmail(email: String, callback: (Boolean) -> Unit) {
+        fireDatabase.getReference("users").orderByChild("email")
+            .equalTo(email).addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (snapshot.exists()) {
+                        callback(true)
+                    } else {
+                        callback(false)
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                }
+            })
     }
 
     fun loggedUser() {

@@ -120,15 +120,58 @@ class AuthRepository @Inject constructor(private val sharedPreferences: SharedPr
                         val addDatabase = fireDatabase.getReference("users")
                             .child(result.user!!.uid).setValue(data).await()
                         addDatabase.let {
-                            firebaseAuth.signOut()
                             val emailAdmin = sharedPreferences.loadData("email")
                             val passwordAdmin = sharedPreferences.loadData("password")
+                            firebaseAuth.signOut()
                             firebaseAuth.signInWithEmailAndPassword(emailAdmin, passwordAdmin)
                             emit(Resource.Success(data= true))
                         }
                     }
                 }
             }
+        } catch (e: HttpException) {
+            emit(Resource.Error(message = e.localizedMessage ?: "Unknown Error"))
+        } catch (e: IOException) {
+            emit(Resource.Error(message = e.localizedMessage ?: "Check Your Internet Connection"))
+        } catch (e: Exception) {
+            emit(Resource.Error(message = e.localizedMessage ?: ""))
+        }
+    }
+
+    fun changeData(email: String, uri: Uri, name: String, nomor: String): Flow<Resource<Boolean>> = flow {
+        emit(Resource.Loading())
+        try {
+            val currentUser = firebaseAuth.currentUser!!.uid
+            val upload = firebaseStorage.reference.child("users")
+                .child(currentUser).child("profile.jpg").putFile(uri).await()
+                upload.let {
+                    val download = firebaseStorage.reference.child("users")
+                        .child(currentUser).child("profile.jpg").downloadUrl.await()
+                    download.let {
+                        val data = User(email, download.toString(), name, nomor)
+                        fireDatabase.getReference("users")
+                            .child(currentUser).setValue(data).await()
+                        emit(Resource.Success(data= true))
+                    }
+                }
+        } catch (e: HttpException) {
+            emit(Resource.Error(message = e.localizedMessage ?: "Unknown Error"))
+        } catch (e: IOException) {
+            emit(Resource.Error(message = e.localizedMessage ?: "Check Your Internet Connection"))
+        } catch (e: Exception) {
+            emit(Resource.Error(message = e.localizedMessage ?: ""))
+        }
+    }
+
+    fun changeDataNoUri(email: String, image: String, name: String, nomor: String): Flow<Resource<Boolean>> = flow {
+        emit(Resource.Loading())
+        try {
+            val currentUser = firebaseAuth.currentUser!!.uid
+            val data = User(email, image, name, nomor)
+            fireDatabase.getReference("users")
+                .child(currentUser).setValue(data).await()
+            emit(Resource.Success(data= true))
+
         } catch (e: HttpException) {
             emit(Resource.Error(message = e.localizedMessage ?: "Unknown Error"))
         } catch (e: IOException) {

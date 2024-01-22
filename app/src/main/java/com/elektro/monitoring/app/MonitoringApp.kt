@@ -23,7 +23,7 @@ class MonitoringApp : Application() {
 
     @Inject
     lateinit var dataViewModel: DataViewModel
-    private val handler = Handler(Looper.getMainLooper())
+    private val handler2 = Handler(Looper.getMainLooper())
 
     override fun onCreate() {
         super.onCreate()
@@ -31,7 +31,7 @@ class MonitoringApp : Application() {
         val notificationManager = applicationContext
             .getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-        handler.postDelayed(runnable, 1000)
+        handler2.postDelayed(runnable, 1000)
         if (notificationManager.getNotificationChannel(Constants.NOTIFICATION_CHANNEL_ID) == null) {
             val name = applicationContext.getString(R.string.app_name)
             val channel = NotificationChannel(
@@ -46,7 +46,7 @@ class MonitoringApp : Application() {
     private val runnable = object : Runnable {
         override fun run() {
             dataViewModel.update()
-            handler.postDelayed(this, 1000)
+            handler2.postDelayed(this, 1000)
         }
     }
 }

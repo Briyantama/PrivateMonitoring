@@ -12,7 +12,9 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
+import com.elektro.monitoring.R
 import com.elektro.monitoring.databinding.FragmentRegisterBinding
 import com.elektro.monitoring.helper.utils.loadImage
 import com.elektro.monitoring.helper.utils.showToastWithoutIcon
@@ -59,11 +61,10 @@ class RegisterFragment : Fragment() {
 
         scope.launch {
             lifecycle.repeatOnLifecycle(Lifecycle.State.CREATED) {
-                authViewModel.shouldNavigateUp.observe(viewLifecycleOwner)
-                { navigateUp ->
-                    if (navigateUp == true) {
-                        requireContext().showToastWithoutIcon("Register Successful")
-                        findNavController().navigateUp()}
+                authViewModel.emailExist.observe(viewLifecycleOwner) { exist ->
+                    if (exist){
+                        requireContext().showToastWithoutIcon("Email sudah terdaftar")
+                    }
                 }
                 authViewModel.check.collect {
                     if (it.error.isNotBlank()) {
@@ -80,6 +81,13 @@ class RegisterFragment : Fragment() {
         binding.btnRegister.setOnClickListener {
             if (authViewModel.file.value == null){
                 requireContext().showToastWithoutIcon("Please input image")
+            }
+            authViewModel.shouldNavigateUp.observe(viewLifecycleOwner) { navigateUp ->
+                if (navigateUp == true) {
+                    requireContext().showToastWithoutIcon("Register Successful")
+                    Navigation.findNavController(requireView())
+                        .navigate(R.id.action_registerFragment_to_accountFragment)
+                }
             }
         }
 

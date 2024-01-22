@@ -5,7 +5,6 @@ import android.content.Context
 import com.elektro.monitoring.data.repo.AuthRepository
 import com.elektro.monitoring.data.repo.NotificationRepository
 import com.elektro.monitoring.helper.sharedpref.SharedPrefData
-import com.elektro.monitoring.viewmodel.AuthViewModel
 import com.elektro.monitoring.viewmodel.DataViewModel
 import dagger.Module
 import dagger.Provides

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="8dp"
-    tools:context=".ui.account.MyAccountFragment">
+    tools:context=".ui.account.EditProfileFragment">
 
     <ImageView
         android:id="@+id/btn_back"
@@ -24,7 +24,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/roboto_bold"
-        android:text="My Profile"
+        android:text="Edit Profile"
         android:textColor="@color/green"
         android:textSize="26sp"
         app:layout_constraintBottom_toBottomOf="@id/btn_back"
@@ -41,6 +41,7 @@
         android:src="@drawable/ic_select_photo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+
         app:layout_constraintTop_toBottomOf="@id/tv_my_profile" />
 
     <TextView
@@ -56,18 +57,20 @@
         app:layout_constraintStart_toStartOf="@+id/btn_back"
         app:layout_constraintTop_toBottomOf="@+id/ivUser" />
 
-    <TextView
+    <EditText
         android:id="@+id/show_nama"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:fontFamily="@font/roboto_medium"
-        android:text="@string/nama"
         android:textColor="@color/green"
         android:textSize="26sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/btn_back"
-        app:layout_constraintTop_toBottomOf="@+id/tv_nama" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_nama"
+        android:inputType="textPersonName" />
 
     <TextView
         android:id="@+id/tv_email"
@@ -134,18 +137,20 @@
         app:layout_constraintStart_toStartOf="@+id/btn_back"
         app:layout_constraintTop_toBottomOf="@+id/show_job" />
 
-    <TextView
+    <EditText
         android:id="@+id/show_no_hp"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:fontFamily="@font/roboto_medium"
-        android:text="@string/no_hp"
         android:textColor="@color/green"
         android:textSize="26sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/btn_back"
-        app:layout_constraintTop_toBottomOf="@+id/tv_phone_number" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_phone_number"
+        android:inputType="phone" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/edit_profile"
@@ -153,10 +158,9 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:visibility="gone"
         android:background="@color/on_click"
         android:backgroundTint="@color/lime_green"
-        android:src="@drawable/pen"
+        android:src="@drawable/baseline_check_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

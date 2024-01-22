@@ -64,6 +64,7 @@ class AccountFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
         binding.myProfile.setOnClickListener{
             Navigation.findNavController(view)
                 .navigate(R.id.action_akunFragment_to_myAccountFragment)

@@ -189,7 +189,7 @@ class DataShowFragment : Fragment() {
         binding.rvDataShow.layoutManager = LinearLayoutManager(context)
     }
 
-    private fun updateLineChart(
+        private fun updateLineChart(
         entries: MutableList<Entry>,
         lineChart: LineChart,
         tanggal: String,

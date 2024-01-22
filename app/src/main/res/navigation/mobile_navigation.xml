@@ -72,12 +72,20 @@
         android:id="@+id/myAccountFragment"
         android:name="com.elektro.monitoring.ui.account.MyAccountFragment"
         android:label="fragment_my_account"
-        tools:layout="@layout/fragment_my_account" />
+        tools:layout="@layout/fragment_my_account" >
+        <action
+            android:id="@+id/action_myAccountFragment_to_editProfileFragment"
+            app:destination="@id/editProfileFragment" />
+    </fragment>
     <fragment
         android:id="@+id/registerFragment"
         android:name="com.elektro.monitoring.ui.auth.RegisterFragment"
         android:label="fragment_register"
-        tools:layout="@layout/fragment_register" />
+        tools:layout="@layout/fragment_register" >
+        <action
+            android:id="@+id/action_registerFragment_to_accountFragment"
+            app:destination="@id/accountFragment" />
+    </fragment>
     <fragment
         android:id="@+id/notificationFragment"
         android:name="com.elektro.monitoring.ui.home.NotificationFragment"
@@ -97,4 +105,13 @@
         android:name="com.elektro.monitoring.ui.data.DataShowFragment"
         android:label="fragment_data_show"
         tools:layout="@layout/fragment_data_show" />
+    <fragment
+        android:id="@+id/editProfileFragment"
+        android:name="com.elektro.monitoring.ui.account.EditProfileFragment"
+        android:label="fragment_edit_profile"
+        tools:layout="@layout/fragment_edit_profile" >
+        <action
+            android:id="@+id/action_editProfileFragment_to_myAccountFragment"
+            app:destination="@id/myAccountFragment" />
+    </fragment>
 </navigation>

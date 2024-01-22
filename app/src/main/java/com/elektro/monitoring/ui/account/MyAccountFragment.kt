@@ -1,5 +1,6 @@
 package com.elektro.monitoring.ui.account
 
+import android.opengl.Visibility
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,7 +10,9 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
+import com.elektro.monitoring.R
 import com.elektro.monitoring.databinding.FragmentMyAccountBinding
 import com.elektro.monitoring.helper.utils.loadImage
 import com.elektro.monitoring.helper.utils.showToastWithoutIcon
@@ -48,6 +51,10 @@ class MyAccountFragment : Fragment() {
                         binding.showJob.text = user.job
                         binding.showNoHp.text = user.phoneNumber
                         loadImage(user.image, requireView(), binding.ivUser)
+
+                        if (user.job!="admin"){
+                            binding.editProfile.visibility = View.VISIBLE
+                        }
                     }
                     }
                 }
@@ -62,6 +69,11 @@ class MyAccountFragment : Fragment() {
 
         binding.btnBack.setOnClickListener {
             findNavController().navigateUp()
+        }
+
+        binding.editProfile.setOnClickListener {
+            Navigation.findNavController(requireView())
+                .navigate(R.id.action_myAccountFragment_to_editProfileFragment)
         }
     }
 }
