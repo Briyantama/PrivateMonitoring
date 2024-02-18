@@ -73,6 +73,7 @@ class NotificationFragment : Fragment() {
                         newData?.let { listNotifikasiSuhu.add(it) }
                     }
 
+                    listNotifikasiSuhu.reverse()
                     dataViewModel.listNotif.postValue(listNotifikasiSuhu)
                 }
 

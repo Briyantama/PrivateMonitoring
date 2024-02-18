@@ -61,16 +61,17 @@ class RegisterFragment : Fragment() {
 
         scope.launch {
             lifecycle.repeatOnLifecycle(Lifecycle.State.CREATED) {
-                authViewModel.emailExist.observe(viewLifecycleOwner) { exist ->
-                    if (exist){
-                        requireContext().showToastWithoutIcon("Email sudah terdaftar")
-                    }
-                }
                 authViewModel.check.collect {
                     if (it.error.isNotBlank()) {
                         requireContext().showToastWithoutIcon(it.error)
                     }
                 }
+            }
+        }
+
+        authViewModel.emailExist.observe(viewLifecycleOwner) { exist ->
+            if (exist){
+                requireContext().showToastWithoutIcon("Email sudah terdaftar")
             }
         }
 
@@ -82,12 +83,13 @@ class RegisterFragment : Fragment() {
             if (authViewModel.file.value == null){
                 requireContext().showToastWithoutIcon("Please input image")
             }
-            authViewModel.shouldNavigateUp.observe(viewLifecycleOwner) { navigateUp ->
-                if (navigateUp == true) {
-                    requireContext().showToastWithoutIcon("Register Successful")
-                    Navigation.findNavController(requireView())
-                        .navigate(R.id.action_registerFragment_to_accountFragment)
-                }
+        }
+
+        authViewModel.shouldNavigateUp.observe(viewLifecycleOwner) { navigateUp ->
+            if (navigateUp == true) {
+                requireContext().showToastWithoutIcon("Register Successful")
+                Navigation.findNavController(requireView())
+                    .navigate(R.id.action_registerFragment_to_accountFragment)
             }
         }
 

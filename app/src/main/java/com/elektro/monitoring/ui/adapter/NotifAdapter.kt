@@ -20,6 +20,11 @@ class NotifAdapter(private val itemList: List<NotifikasiSuhu>, private val conte
         fun bind(item: NotifikasiSuhu, context: Context){
             binding.tvPesanNotif.text = item.text
             binding.tvJenisNotif.text = item.title
+            binding.tvTime.text = buildString {
+                append(item.hari)
+                append(" ")
+                append(item.time)
+            }
             binding.ivClear.setOnClickListener {
                 fireDatabase.getReference("notif").orderByChild("time")
                     .equalTo(item.time).addListenerForSingleValueEvent(

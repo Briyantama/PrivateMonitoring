@@ -12,18 +12,17 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import com.elektro.monitoring.R
 import com.elektro.monitoring.databinding.FragmentHomeBinding
-import com.elektro.monitoring.helper.Constants.TAG
 import com.elektro.monitoring.helper.sharedpref.SharedPrefData
+import com.elektro.monitoring.helper.utils.getMonth
+import com.elektro.monitoring.helper.utils.getTanggal
+import com.elektro.monitoring.helper.utils.getWeekNumber
+import com.elektro.monitoring.helper.utils.invertBulan
+import com.elektro.monitoring.helper.utils.settingLineChart
+import com.elektro.monitoring.helper.utils.updateLineChart
 import com.elektro.monitoring.model.Data10Min
 import com.elektro.monitoring.model.DataNow
 import com.elektro.monitoring.viewmodel.DataViewModel
-import com.github.mikephil.charting.charts.LineChart
-import com.github.mikephil.charting.components.Description
-import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.Entry
-import com.github.mikephil.charting.data.LineData
-import com.github.mikephil.charting.data.LineDataSet
-import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -38,22 +37,20 @@ import javax.inject.Inject
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
-
     @Inject
     lateinit var sharedPrefData: SharedPrefData
-    private val dataViewModel: DataViewModel by viewModels()
 
+    private val dataViewModel: DataViewModel by viewModels()
     private val mCurrentIn: MutableList<Entry> = mutableListOf()
+
     private val mCurrentOut: MutableList<Entry> = mutableListOf()
     private val mTime: MutableList<String> = mutableListOf()
     private val mTegangan: MutableList<Entry> = mutableListOf()
     private val mSoC: MutableList<Entry> = mutableListOf()
+    private val msdf = SimpleDateFormat("HH:mm:ss,SSS", Locale.getDefault())
 
-    private val options = ArrayList<String>()
-
-    private val tf = SimpleDateFormat("EEEE, dd-MMMM-yyyy", Locale.getDefault())
-    private val tanggal: String = tf.format(Calendar.getInstance().time)
     private val fireDatabase: FirebaseDatabase = FirebaseDatabase.getInstance()
+    private val options = ArrayList<String>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -84,7 +81,7 @@ class HomeFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        val sizeDate = sharedPrefData.callDataInt("sizeDate")
+        val today = sharedPrefData.callDataString("today")
 
         fireDatabase.getReference("panels").addListenerForSingleValueEvent(
             object : ValueEventListener {
@@ -115,9 +112,12 @@ class HomeFragment : Fragment() {
                 position: Int,
                 id: Long
             ) {
-                sharedPrefData.editDataString("selectedpanel", options[position]).toString()
+                sharedPrefData.editDataString("selectedpanel", options[position])
+                val date = getTanggal(today)
+                val bulan = invertBulan(getMonth(today))
+                val weekInt = getWeekNumber(today)
 
-                fireDatabase.getReference("panels/${options[position]}/$sizeDate/$tanggal")
+                fireDatabase.getReference("panels/${options[position]}/$bulan/$weekInt/$date/$today")
                     .limitToLast(7).addValueEventListener(object : ValueEventListener {
                         override fun onDataChange(snapshot: DataSnapshot) {
                             dataViewModel.mdata10MinList.value?.clear()
@@ -184,61 +184,34 @@ class HomeFragment : Fragment() {
         }
 
         dataViewModel.time.observe(viewLifecycleOwner) { time ->
+            val mtime = msdf.format(Calendar.getInstance().time)
+            Log.d("Notification Test", "onDataChange: \n${time.last()}\n$mtime")
             dataViewModel.currentOut.observe(viewLifecycleOwner) { currentOut ->
-                updateLineChart(currentOut, binding.graphCurrentOut, tanggal, time, "Arus Keluar")
+                updateLineChart(currentOut, binding.graphCurrentOut, today, time)
             }
             dataViewModel.currentIn.observe(viewLifecycleOwner) { currentIn ->
-                updateLineChart(currentIn, binding.graphCurrentIn, tanggal, time, "Arus Masuk")
+                updateLineChart(currentIn, binding.graphCurrentIn, today, time)
             }
             dataViewModel.tegangan.observe(viewLifecycleOwner) { tegangan ->
-                updateLineChart(tegangan, binding.graphVolt, tanggal, time, "Tegangan")
+                updateLineChart(tegangan, binding.graphVolt, today, time)
             }
             dataViewModel.stateCharge.observe(viewLifecycleOwner) { soc ->
-                updateLineChart(soc, binding.graphSoC, tanggal, time, "State of Charge")
+                updateLineChart(soc, binding.graphSoC, today, time)
             }
         }
 
         dataViewModel.dataNow.observe(viewLifecycleOwner) {
-            binding.showArusMasuk.text = it.arusMasuk.toString()
-            binding.showArusKeluar.text = it.arusKeluar.toString()
-            binding.showTegangan.text = it.tegangan.toString()
-            binding.showSoc.text = buildString {
-                append(it.soc)
-                append("%")
-            }
-            binding.showSuhu.text = buildString {
-                append(it.suhu)
-                append("°C")
-            }
+            val arusMasuk = "${it.arusMasuk}A"
+            val arusKeluar = "${it.arusKeluar}A"
+            val tegangan = "${it.tegangan}v"
+            val soc = "${it.soc}%"
+            val suhu = "${it.suhu}°C"
+
+            binding.showArusMasuk.text = arusMasuk
+            binding.showArusKeluar.text = arusKeluar
+            binding.showTegangan.text = tegangan
+            binding.showSoc.text = soc
+            binding.showSuhu.text = suhu
         }
-    }
-
-    private fun updateLineChart(
-        entries: MutableList<Entry>,
-        lineChart: LineChart,
-        tanggal: String,
-        mTime: MutableList<String>,
-        mDescription: String
-    ) {
-        val lineDataSet = LineDataSet(entries, tanggal)
-        val lineData = LineData(lineDataSet)
-        val description = Description()
-
-        lineChart.data = lineData
-        description.text = mDescription
-        lineChart.description = description
-        val leftYAxis = lineChart.axisLeft
-        val rightYAxis = lineChart.axisRight
-        rightYAxis.isEnabled = false
-        leftYAxis.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART)
-        lineChart.xAxis.valueFormatter = IndexAxisValueFormatter(mTime)
-        lineChart.notifyDataSetChanged()
-        lineChart.invalidate()
-    }
-
-    private fun settingLineChart(lineChart: LineChart) {
-        lineChart.setTouchEnabled(false)
-        lineChart.setPinchZoom(false)
-        lineChart.isDragEnabled = false
     }
 }

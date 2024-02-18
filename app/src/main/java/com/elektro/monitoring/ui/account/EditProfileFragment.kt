@@ -2,7 +2,6 @@ package com.elektro.monitoring.ui.account
 
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,7 +16,6 @@ import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import com.elektro.monitoring.R
 import com.elektro.monitoring.databinding.FragmentEditProfileBinding
-import com.elektro.monitoring.helper.Constants.TAG
 import com.elektro.monitoring.helper.utils.loadImage
 import com.elektro.monitoring.helper.utils.showToastWithoutIcon
 import com.elektro.monitoring.viewmodel.AuthViewModel
@@ -53,8 +51,8 @@ class EditProfileFragment : Fragment() {
             }
         }
 
-        val lifecycle = viewLifecycleOwner.lifecycle
         val scope = viewLifecycleOwner.lifecycleScope
+        val lifecycle = viewLifecycleOwner.lifecycle
 
         scope.launch {
             lifecycle.repeatOnLifecycle(Lifecycle.State.CREATED) {
@@ -67,8 +65,11 @@ class EditProfileFragment : Fragment() {
                         binding.showEmail.text = user.email
                         binding.showJob.text = user.job
                         binding.showNoHp.setText(user.phoneNumber)
-                        authViewModel.password.postValue(user.image)
                         loadImage(user.image, requireView(), binding.ivUser)
+                        authViewModel.name.postValue(user.name)
+                        authViewModel.email.postValue(user.email)
+                        authViewModel.nomor.postValue(user.phoneNumber)
+                        authViewModel.password.postValue(user.image)
                     }
                     }
                 }
@@ -84,14 +85,20 @@ class EditProfileFragment : Fragment() {
         }
 
         binding.editProfile.setOnClickListener {
-            if (authViewModel.file.value==null){
-                authViewModel.changeDataNoUri(binding.showEmail.text.toString(),
-                    authViewModel.password.value.toString(),
-                    binding.showNama.text.toString(), binding.showNoHp.text.toString())
+            if (authViewModel.name.value == binding.showNama.text.toString() &&
+                authViewModel.nomor.value == binding.showNoHp.text.toString() &&
+                authViewModel.file.value==null) {
+                findNavController().navigateUp()
             } else {
-                authViewModel.changeData(binding.showEmail.text.toString(),
-                    binding.showNama.text.toString(), binding.showNoHp.text.toString()
-                )
+                if (authViewModel.file.value==null){
+                    authViewModel.changeDataNoUri(binding.showEmail.text.toString(),
+                        authViewModel.password.value.toString(),
+                        binding.showNama.text.toString(), binding.showNoHp.text.toString())
+                } else {
+                    authViewModel.changeData(binding.showEmail.text.toString(),
+                        binding.showNama.text.toString(), binding.showNoHp.text.toString()
+                    )
+                }
             }
         }
 

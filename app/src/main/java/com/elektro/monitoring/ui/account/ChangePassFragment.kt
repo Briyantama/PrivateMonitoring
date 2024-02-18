@@ -39,25 +39,23 @@ class ChangePassFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        authViewModel.getUserData()
-
-        val lifecycle = viewLifecycleOwner.lifecycle
         val scope = viewLifecycleOwner.lifecycleScope
+        val lifecycle = viewLifecycleOwner.lifecycle
 
         scope.launch {
             lifecycle.repeatOnLifecycle(Lifecycle.State.CREATED) {
-                authViewModel.shouldNavigateUp.observe(viewLifecycleOwner)
-                { navigateUp ->
-                    if (navigateUp == true) {
-                        requireContext().showToastWithoutIcon("Password Has Changed")
-                        findNavController().navigateUp()}
-                }
                 authViewModel.check.collect { result ->
                     if (result.error.isNotBlank()) {
                         requireContext().showToastWithoutIcon(result.error)
                     }
                 }
             }
+        }
+
+        authViewModel.shouldNavigateUp.observe(viewLifecycleOwner) { navigateUp ->
+            if (navigateUp == true) {
+                requireContext().showToastWithoutIcon("Password Has Changed")
+                findNavController().navigateUp()}
         }
 
         binding.btnBack.setOnClickListener {

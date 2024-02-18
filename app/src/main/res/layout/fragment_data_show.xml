@@ -39,7 +39,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
         android:fontFamily="@font/roboto_bold"
-        android:text="Pilih Panel Surya"
+        android:text="@string/pilih_panel_surya"
         android:textColor="@color/green"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -93,7 +93,23 @@
                         app:layout_constraintTop_toTopOf="parent">
 
                         <TableRow>
-
+                            <TextView
+                                android:layout_width="52dp"
+                                android:layout_height="wrap_content"
+                                android:text="@string/no"
+                                android:textColor="@color/black"
+                                android:textSize="16sp"
+                                android:gravity="center"
+                                android:padding="8dp"
+                                android:fontFamily="@font/roboto_medium"/>
+                            <TextView
+                                android:layout_width="156dp"
+                                android:fontFamily="@font/roboto_bold"
+                                android:gravity="center"
+                                android:padding="8dp"
+                                android:text="@string/time"
+                                android:textColor="@color/black"
+                                android:textSize="16sp" />
                             <TextView
                                 android:layout_width="104dp"
                                 android:fontFamily="@font/roboto_bold"
@@ -130,14 +146,6 @@
                                 android:textColor="@color/black"
                                 android:textSize="16sp" />
 
-                            <TextView
-                                android:layout_width="156dp"
-                                android:fontFamily="@font/roboto_bold"
-                                android:gravity="center"
-                                android:padding="8dp"
-                                android:text="@string/time"
-                                android:textColor="@color/black"
-                                android:textSize="16sp" />
                         </TableRow>
                     </TableLayout>
 

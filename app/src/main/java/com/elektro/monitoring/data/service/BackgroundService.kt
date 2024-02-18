@@ -9,6 +9,7 @@ import android.util.Log
 import com.elektro.monitoring.data.repo.NotificationRepository
 import com.elektro.monitoring.helper.Constants.TAG
 import com.elektro.monitoring.helper.sharedpref.SharedPrefData
+import com.elektro.monitoring.helper.utils.convertMiliSecond
 import com.elektro.monitoring.model.DataNow
 import com.elektro.monitoring.model.NotifikasiSuhu
 import com.elektro.monitoring.viewmodel.DataViewModel
@@ -30,11 +31,12 @@ class BackgroundService: Service() {
     @Inject
     lateinit var notificationRepository: NotificationRepository
 
-    private var lastNotificationTime: Long = 0
     private val fireDatabase: FirebaseDatabase = FirebaseDatabase.getInstance()
     private val handler = Handler(Looper.getMainLooper())
-    private val sdf = SimpleDateFormat("HH:mm:ss,SSS", Locale.getDefault())
-    private val tf = SimpleDateFormat("EEEE, dd-MMMM-yyyy", Locale.getDefault())
+    private val msdf = SimpleDateFormat("HH:mm:ss,SSS", Locale.getDefault())
+    private val sdf = SimpleDateFormat("HH:mm", Locale.getDefault())
+    private val tf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+    private val tfLengkap = SimpleDateFormat("EEEE, dd-MMMM-yyyy", Locale.getDefault())
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         super.onStartCommand(intent, flags, startId)
@@ -56,16 +58,18 @@ class BackgroundService: Service() {
     private val runnable = object : Runnable {
         override fun run() {
             val sharedPrefData = SharedPrefData(application)
-            val currentTime = System.currentTimeMillis()
-            val sizeDate = sharedPrefData.callDataInt("sizeDate")
-            val selectedPanel = sharedPrefData.callDataString("selectedpanel")
-            val tanggal: String = tf.format(Calendar.getInstance().time)
+            val mCurrentTime = msdf.format(Calendar.getInstance().time)
+            val currentTime = convertMiliSecond(mCurrentTime)
+            val tanggal = tf.format(Calendar.getInstance().time)
+            val date = sharedPrefData.callDataString("dateToday")
+            sharedPrefData.editDataString("today", tfLengkap.format(Calendar.getInstance().time))
+
             Log.d(TAG, "run: berjalan")
 
             fireDatabase.getReference("notif").limitToLast(1)
                 .addValueEventListener(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
-                        for (childSnapshot in snapshot.children) {
+                        snapshot.children.forEach { childSnapshot ->
                             childSnapshot.key?.toInt()?.let {
                                 sharedPrefData.editDataInt("sizeNotif", it) }
                         }
@@ -75,29 +79,12 @@ class BackgroundService: Service() {
                     }
                 })
 
-            fireDatabase.getReference("panels/Solar A").limitToLast(1)
+            fireDatabase.getReference("panels/Solar A/$date").limitToLast(1)
                 .addValueEventListener(object : ValueEventListener{
                     override fun onDataChange(snapshot: DataSnapshot) {
-                        for (childSnapshot in snapshot.children) {
-                            childSnapshot.children.forEach {value ->
-                                value.key?.let {
-                                    sharedPrefData.editDataString("date", it)
-                                }
-                            }
-                            childSnapshot.key?.toInt()?.let {
-                                sharedPrefData.editDataInt("sizeDate", it) }
-                        }
-                    }
-
-                    override fun onCancelled(error: DatabaseError) {
-                    }
-                })
-
-            fireDatabase.getReference("panels/$selectedPanel/$sizeDate/$tanggal")
-                .limitToLast(1).addValueEventListener(object : ValueEventListener {
-                    override fun onDataChange(snapshot: DataSnapshot) {
-                        snapshot.children.forEach{ value ->
-                            value.key?.let { sharedPrefData.editDataInt("sizeData", it.toInt()) }
+                        snapshot.children.forEach { childSnapshot ->
+                            childSnapshot.key?.let {
+                                sharedPrefData.editDataInt("sizeData", it.toInt()) }
                         }
                     }
 
@@ -109,11 +96,15 @@ class BackgroundService: Service() {
                 .addValueEventListener(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
                         val newData = snapshot.getValue(DataNow::class.java)
+                        val lastNotifTime = sharedPrefData.callDataInt("lastNotifTime")
                         val sizeNotif = sharedPrefData.callDataInt("sizeNotif") + 1
+                        val diff = currentTime-lastNotifTime
 
                         if (newData != null) {
-                            if (currentTime - lastNotificationTime >= 10000 && newData.suhu >= 35f) {
+                            if (diff >= 300000 && newData.suhu >= 35f) {
+                                Log.d("Notification Test", "onDataChange: $diff")
                                 val jam = sdf.format(Calendar.getInstance().time)
+
                                 notificationRepository.sendNotification(
                                     applicationContext,
                                     "Suhu tinggi: ${newData.suhu}°C",
@@ -126,8 +117,9 @@ class BackgroundService: Service() {
                                     "Suhu tinggi: ${newData.suhu}°C",
                                     "Watercooling menyala"
                                 )
+
                                 fireDatabase.getReference("notif").child(sizeNotif.toString()).setValue(notifSuhu)
-                                lastNotificationTime = currentTime
+                                sharedPrefData.editDataInt("lastNotifTime", currentTime)
                             }
                         }
                     }

@@ -20,16 +20,16 @@
     <string name="register">Register</string>
     <string name="job">Posisi</string>
     <string name="no_hp">Nomor Handphone</string>
-    <string name="current_in">Arus Masuk</string>
+    <string name="current_in">Current Charging</string>
     <string name="nilai_sekarang">Nilai Sekarang</string>
-    <string name="tegangan">Tegangan</string>
-    <string name="current_out">Arus Keluar</string>
+    <string name="tegangan">Volt</string>
+    <string name="current_out">Current Discharging</string>
     <string name="SoC">SoC</string>
     <string name="suhu">Suhu</string>
-    <string name="grafik_tegangan">Grafik Tegangan</string>
-    <string name="grafik_arus_keluar">Grafik Arus Keluar</string>
-    <string name="grafik_arus_masuk">Grafik Arus Masuk</string>
-    <string name="grafik_soc">Grafik SoC</string>
+    <string name="grafik_tegangan">Volt Graphic</string>
+    <string name="grafik_arus_keluar">Current Discharging Graphic</string>
+    <string name="grafik_arus_masuk">Current Charging Graphic</string>
+    <string name="grafik_soc">SoC Graphic</string>
     <string name="lorem_ipsum">Lorem ipsum dolor sit amet</string>
     <string name="notification">Notification</string>
     <string name="history">History</string>
@@ -41,4 +41,11 @@
     <string name="register_account">Register Account</string>
     <string name="nama_lengkap">Nama Lengkap</string>
     <string name="nomor_handphone">Nomor Handphone</string>
+    <string name="no">No</string>
+    <string name="pilih_panel_surya">Pilih Panel Surya</string>
+    <string-array name="period_array">
+        <item>Daily</item>
+        <item>Weekly</item>
+        <item>Monthly</item>
+    </string-array>
 </resources>

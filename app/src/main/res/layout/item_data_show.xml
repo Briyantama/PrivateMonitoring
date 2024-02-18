@@ -1,12 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:divider="?android:attr/dividerHorizontal"
-    android:stretchColumns="5"
+    android:stretchColumns="6"
     android:showDividers="beginning|middle|end"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
     <TableRow>
+        <TextView
+            android:id="@+id/data_No"
+            android:layout_width="52dp"
+            android:layout_height="wrap_content"
+            android:text="@string/no"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:padding="8dp"
+            android:fontFamily="@font/roboto_medium"/>
+        <TextView
+            android:id="@+id/data_time"
+            android:layout_width="156dp"
+            android:text="@string/time"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:padding="8dp"
+            android:fontFamily="@font/roboto_medium"/>
         <TextView
             android:id="@+id/data_current_in"
             android:layout_width="104dp"
@@ -39,15 +58,6 @@
             android:id="@+id/data_soc"
             android:layout_width="78dp"
             android:text="@string/SoC"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            android:gravity="center"
-            android:padding="8dp"
-            android:fontFamily="@font/roboto_medium"/>
-        <TextView
-            android:id="@+id/data_time"
-            android:layout_width="156dp"
-            android:text="@string/time"
             android:textColor="@color/black"
             android:textSize="16sp"
             android:gravity="center"

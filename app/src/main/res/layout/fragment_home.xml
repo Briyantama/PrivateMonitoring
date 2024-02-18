@@ -91,7 +91,7 @@
                         android:fontFamily="@font/roboto_medium"
                         android:text="@string/nilai_sekarang"
                         android:textColor="@color/green"
-                        android:textSize="33sp"
+                        android:textSize="26sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 

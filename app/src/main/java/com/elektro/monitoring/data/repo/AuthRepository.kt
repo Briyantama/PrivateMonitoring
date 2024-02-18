@@ -46,7 +46,7 @@ class AuthRepository @Inject constructor(private val sharedPreferences: SharedPr
         } catch (e: IOException) {
             emit(Resource.Error(message = e.localizedMessage ?: "Check Your Internet Connection"))
         } catch (e: Exception) {
-            emit(Resource.Error(message = e.localizedMessage ?: ""))
+            emit(Resource.Error(message = "Email atau Password salah"))
         }
     }
 

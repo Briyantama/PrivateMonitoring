@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -9,17 +8,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
-        android:padding="8dp">
+        android:padding="4dp">
 
         <ImageView
             android:id="@+id/imageView2"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_marginStart="8dp"
             android:fadingEdgeLength="6dp"
             android:scaleType="fitXY"
             android:src="@drawable/baseline_notifications"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_pesan_notif"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_time"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/tv_jenis_notif"
             app:tint="@color/green" />
@@ -42,7 +41,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="4dp"
             android:fontFamily="@font/roboto"
             android:text="@string/lorem_ipsum"
             android:textColor="@color/black"
@@ -50,13 +49,26 @@
             app:layout_constraintStart_toEndOf="@+id/imageView2"
             app:layout_constraintTop_toBottomOf="@+id/tv_jenis_notif" />
 
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="16dp"
+            android:fontFamily="@font/roboto"
+            android:text="@string/lorem_ipsum"
+            android:textColor="@color/black"
+            android:textSize="13sp"
+            app:layout_constraintEnd_toStartOf="@+id/iv_clear"
+            app:layout_constraintTop_toBottomOf="@+id/tv_pesan_notif" />
+
         <ImageView
             android:id="@+id/iv_clear"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_marginEnd="8dp"
             android:src="@drawable/baseline_clear_24"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_pesan_notif"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_time"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/tv_jenis_notif"
             app:tint="@color/red" />
@@ -65,11 +77,11 @@
             android:id="@+id/divider3"
             android:layout_width="match_parent"
             android:layout_height="4dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:background="@color/lime_green"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_pesan_notif" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_time" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>
