@@ -5,9 +5,7 @@ import android.content.Intent
 import android.os.Handler
 import android.os.IBinder
 import android.os.Looper
-import android.util.Log
 import com.elektro.monitoring.data.repo.NotificationRepository
-import com.elektro.monitoring.helper.Constants.TAG
 import com.elektro.monitoring.helper.sharedpref.SharedPrefData
 import com.elektro.monitoring.helper.utils.convertMiliSecond
 import com.elektro.monitoring.model.DataNow
@@ -59,12 +57,10 @@ class BackgroundService: Service() {
         override fun run() {
             val sharedPrefData = SharedPrefData(application)
             val mCurrentTime = msdf.format(Calendar.getInstance().time)
-            val currentTime = convertMiliSecond(mCurrentTime)
+            var currentTime = convertMiliSecond(mCurrentTime)
             val tanggal = tf.format(Calendar.getInstance().time)
             val date = sharedPrefData.callDataString("dateToday")
             sharedPrefData.editDataString("today", tfLengkap.format(Calendar.getInstance().time))
-
-            Log.d(TAG, "run: berjalan")
 
             fireDatabase.getReference("notif").limitToLast(1)
                 .addValueEventListener(object : ValueEventListener {
@@ -86,6 +82,8 @@ class BackgroundService: Service() {
                             childSnapshot.key?.let {
                                 sharedPrefData.editDataInt("sizeData", it.toInt()) }
                         }
+
+                        snapshot.key?.let { sharedPrefData.editDataString("lastDate", it) }
                     }
 
                     override fun onCancelled(error: DatabaseError) {
@@ -97,12 +95,15 @@ class BackgroundService: Service() {
                     override fun onDataChange(snapshot: DataSnapshot) {
                         val newData = snapshot.getValue(DataNow::class.java)
                         val lastNotifTime = sharedPrefData.callDataInt("lastNotifTime")
+                        val lastDate = sharedPrefData.callDataString("lastNotifDate")
                         val sizeNotif = sharedPrefData.callDataInt("sizeNotif") + 1
+                        if (lastDate!=tanggal){
+                            currentTime+=86400000
+                        }
                         val diff = currentTime-lastNotifTime
 
                         if (newData != null) {
                             if (diff >= 300000 && newData.suhu >= 35f) {
-                                Log.d("Notification Test", "onDataChange: $diff")
                                 val jam = sdf.format(Calendar.getInstance().time)
 
                                 notificationRepository.sendNotification(
@@ -120,6 +121,7 @@ class BackgroundService: Service() {
 
                                 fireDatabase.getReference("notif").child(sizeNotif.toString()).setValue(notifSuhu)
                                 sharedPrefData.editDataInt("lastNotifTime", currentTime)
+                                sharedPrefData.editDataString("lastNotifDate", tanggal)
                             }
                         }
                     }

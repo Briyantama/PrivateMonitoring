@@ -1,7 +1,6 @@
 package com.elektro.monitoring.ui.home
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -185,7 +184,6 @@ class HomeFragment : Fragment() {
 
         dataViewModel.time.observe(viewLifecycleOwner) { time ->
             val mtime = msdf.format(Calendar.getInstance().time)
-            Log.d("Notification Test", "onDataChange: \n${time.last()}\n$mtime")
             dataViewModel.currentOut.observe(viewLifecycleOwner) { currentOut ->
                 updateLineChart(currentOut, binding.graphCurrentOut, today, time)
             }

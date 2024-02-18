@@ -1,11 +1,9 @@
 package com.elektro.monitoring.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.elektro.monitoring.helper.Constants.TAG
 import com.elektro.monitoring.helper.sharedpref.SharedPrefData
 import com.elektro.monitoring.helper.utils.convertBulan
 import com.elektro.monitoring.helper.utils.convertMinggu
@@ -223,7 +221,6 @@ class DataViewModel @Inject constructor(private val sharedPrefData: SharedPrefDa
         viewModelScope.launch(Dispatchers.Main) {
             val tanggal = tf.format(Calendar.getInstance().time)
             val jam = sdf.format(Calendar.getInstance().time)
-            Log.d("Notification Test", "1 onDataChange: $jam")
 
             val soc = sharedPrefData.totalSoC()
             val mArusKeluar = sharedPrefData.totalData("totalArusKeluar")
@@ -319,8 +316,7 @@ class DataViewModel @Inject constructor(private val sharedPrefData: SharedPrefDa
         val weekInt = getWeekNumber(date)
 
         var sizeData = sharedPrefData.callDataInt("sizeData") + 1
-        val today = sharedPrefData.callDataString("today")
-        Log.d(TAG, "postToFirebase10Min: $bulan\n$weekInt\n$tanggal")
+        val lastDate = sharedPrefData.callDataString("lastDate")
 
         val data10Min = Data10Min(
             decimalFormatSuhu.format(soc).toFloat(),
@@ -330,13 +326,11 @@ class DataViewModel @Inject constructor(private val sharedPrefData: SharedPrefDa
             decimalFormat.format(tegangan).toFloat()
         )
 
-        if (date!=today){
+        if (date!=lastDate){
             sizeData=0
         }
 
-        Log.d(TAG, "postToFirebase10Min: $bulan\n$weekInt")
         sharedPrefData.editDataString("dateToday", "$bulan/$weekInt/$tanggal/$date")
-
         val path = "panels/Solar A/$bulan/$weekInt/$tanggal/$date/$sizeData"
         fireDatabase.getReference(path).setValue(data10Min)
     }
