@@ -150,16 +150,16 @@ class DataShowFragment : Fragment() {
 
         dataViewModel.time.observe(viewLifecycleOwner) { time ->
             dataViewModel.currentOut.observe(viewLifecycleOwner) { currentOut ->
-                updateLineChart(currentOut, binding.graphCurrentOut, dateSelect, time)
+                updateLineChart(currentOut, binding.graphCurrentOut, dateSelect)
             }
             dataViewModel.currentIn.observe(viewLifecycleOwner) { currentIn ->
-                updateLineChart(currentIn, binding.graphCurrentIn, dateSelect, time)
+                updateLineChart(currentIn, binding.graphCurrentIn, dateSelect)
             }
             dataViewModel.tegangan.observe(viewLifecycleOwner) { tegangan ->
-                updateLineChart(tegangan, binding.graphVolt, dateSelect, time)
+                updateLineChart(tegangan, binding.graphVolt, dateSelect)
             }
             dataViewModel.stateCharge.observe(viewLifecycleOwner) { soc ->
-                updateLineChart(soc, binding.graphSoC, dateSelect, time)
+                updateLineChart(soc, binding.graphSoC, dateSelect)
             }
         }
     }

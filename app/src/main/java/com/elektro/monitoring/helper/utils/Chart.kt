@@ -6,13 +6,11 @@ import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
-import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 
 fun updateLineChart(
     entries: MutableList<Entry>,
     lineChart: LineChart,
     tanggal: String,
-    mTime: MutableList<String>
 ) {
     val lineDataSet = LineDataSet(entries, tanggal)
     val lineData = LineData(lineDataSet)

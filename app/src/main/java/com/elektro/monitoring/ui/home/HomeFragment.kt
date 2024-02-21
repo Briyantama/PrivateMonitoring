@@ -27,17 +27,14 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import dagger.hilt.android.AndroidEntryPoint
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Locale
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
-    private var _binding: FragmentHomeBinding? = null
-    private val binding get() = _binding!!
     @Inject
     lateinit var sharedPrefData: SharedPrefData
+    private val binding get() = _binding!!
+    private var _binding: FragmentHomeBinding? = null
 
     private val dataViewModel: DataViewModel by viewModels()
     private val mCurrentIn: MutableList<Entry> = mutableListOf()
@@ -46,7 +43,6 @@ class HomeFragment : Fragment() {
     private val mTime: MutableList<String> = mutableListOf()
     private val mTegangan: MutableList<Entry> = mutableListOf()
     private val mSoC: MutableList<Entry> = mutableListOf()
-    private val msdf = SimpleDateFormat("HH:mm:ss,SSS", Locale.getDefault())
 
     private val fireDatabase: FirebaseDatabase = FirebaseDatabase.getInstance()
     private val options = ArrayList<String>()
@@ -184,16 +180,16 @@ class HomeFragment : Fragment() {
 
         dataViewModel.time.observe(viewLifecycleOwner) { time ->
             dataViewModel.currentOut.observe(viewLifecycleOwner) { currentOut ->
-                updateLineChart(currentOut, binding.graphCurrentOut, today, time)
+                updateLineChart(currentOut, binding.graphCurrentOut, today)
             }
             dataViewModel.currentIn.observe(viewLifecycleOwner) { currentIn ->
-                updateLineChart(currentIn, binding.graphCurrentIn, today, time)
+                updateLineChart(currentIn, binding.graphCurrentIn, today)
             }
             dataViewModel.tegangan.observe(viewLifecycleOwner) { tegangan ->
-                updateLineChart(tegangan, binding.graphVolt, today, time)
+                updateLineChart(tegangan, binding.graphVolt, today)
             }
             dataViewModel.stateCharge.observe(viewLifecycleOwner) { soc ->
-                updateLineChart(soc, binding.graphSoC, today, time)
+                updateLineChart(soc, binding.graphSoC, today)
             }
         }
 
