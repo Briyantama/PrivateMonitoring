@@ -109,9 +109,5 @@
         android:id="@+id/editProfileFragment"
         android:name="com.elektro.monitoring.ui.account.EditProfileFragment"
         android:label="fragment_edit_profile"
-        tools:layout="@layout/fragment_edit_profile" >
-        <action
-            android:id="@+id/action_editProfileFragment_to_myAccountFragment"
-            app:destination="@id/myAccountFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_edit_profile" />
 </navigation>

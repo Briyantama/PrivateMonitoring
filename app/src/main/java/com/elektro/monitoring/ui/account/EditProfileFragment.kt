@@ -12,9 +12,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
-import com.elektro.monitoring.R
 import com.elektro.monitoring.databinding.FragmentEditProfileBinding
 import com.elektro.monitoring.helper.utils.loadImage
 import com.elektro.monitoring.helper.utils.showToastWithoutIcon
@@ -105,8 +103,7 @@ class EditProfileFragment : Fragment() {
         authViewModel.shouldNavigateUp.observe(viewLifecycleOwner) { navigateUp ->
             if (navigateUp == true) {
                 requireContext().showToastWithoutIcon("Profile Updated Successfully")
-                Navigation.findNavController(requireView())
-                    .navigate(R.id.action_editProfileFragment_to_myAccountFragment)
+                findNavController().navigateUp()
             }
         }
     }

@@ -183,7 +183,6 @@ class HomeFragment : Fragment() {
         }
 
         dataViewModel.time.observe(viewLifecycleOwner) { time ->
-            val mtime = msdf.format(Calendar.getInstance().time)
             dataViewModel.currentOut.observe(viewLifecycleOwner) { currentOut ->
                 updateLineChart(currentOut, binding.graphCurrentOut, today, time)
             }
