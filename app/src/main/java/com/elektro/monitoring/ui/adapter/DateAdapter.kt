@@ -50,23 +50,22 @@ class DateAdapter(private val itemList: List<String>, application: Application)
         when (period) {
             "Monthly" -> {
                 val bulan = invertBulan(text)
-
                 sharedPrefData.editDataString("dateRef", bulan)
             }
             "Weekly" -> {
                 val part = text.split(" ")
                 val minggu = invertMinggu(part[0] + " " + part[1])
                 val bulan = invertBulan(part[2])
-
                 sharedPrefData.editDataString("dateRef", "$bulan/$minggu")
             }
             "Daily" -> {
                 val week = getWeekNumber(text)
                 val tanggal = getTanggal(text)
                 val bulan = invertBulan(getMonth(text))
-                Log.d(TAG, "saveSP: $week\n$tanggal\n$bulan\n$text")
-
                 sharedPrefData.editDataString("dateRef", "$bulan/$week/$tanggal/$text")
+            }
+            else -> {
+                Log.e(TAG, "Unexpected period value: $period")
             }
         }
     }

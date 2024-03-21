@@ -85,6 +85,9 @@
         <action
             android:id="@+id/action_registerFragment_to_accountFragment"
             app:destination="@id/accountFragment" />
+        <argument
+            android:name="halo"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/notificationFragment"

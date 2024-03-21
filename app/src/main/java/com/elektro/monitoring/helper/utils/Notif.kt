@@ -2,15 +2,12 @@ package com.elektro.monitoring.helper.utils
 
 import android.app.AlertDialog
 import android.content.Context
+import android.os.Build
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
-import android.view.View
-import android.widget.FrameLayout
 import android.widget.Toast
-import androidx.core.content.ContextCompat
-import com.elektro.monitoring.R
 import com.elektro.monitoring.databinding.CustomToastLayoutBinding
-import com.google.android.material.snackbar.Snackbar
 
 fun Context.showToastWithoutIcon(message: String, duration: Int = Toast.LENGTH_SHORT) {
     val inflater = LayoutInflater.from(this)
@@ -22,7 +19,17 @@ fun Context.showToastWithoutIcon(message: String, duration: Int = Toast.LENGTH_S
     val toast = Toast(applicationContext)
     toast.setGravity(Gravity.CENTER_HORIZONTAL or Gravity.BOTTOM, 0, 160)
     toast.duration = duration
-    toast.view = binding.root
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+        toast.addCallback(object : Toast.Callback(){
+            override fun onToastShown() {
+                Log.d("ToastCallback", "Toast shown")
+            }
+
+            override fun onToastHidden() {
+                Log.d("ToastCallback", "Toast hidden")
+            }
+        })
+    }
     toast.show()
 }
 

@@ -1,6 +1,6 @@
 package com.elektro.monitoring.ui.adapter
 
-import  android.app.Application
+import android.app.Application
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -8,31 +8,24 @@ import com.elektro.monitoring.databinding.ItemDataShowBinding
 import com.elektro.monitoring.helper.sharedpref.SharedPrefData
 import com.elektro.monitoring.model.Data10Min
 
-class DataAdapter(private val itemList: List<Data10Min>, private val mdateList: List<String>, application: Application)
+class DataAdapter(private val itemList: List<Data10Min>, private val mdateList: List<String>?, application: Application)
     : RecyclerView.Adapter<DataAdapter.ViewHolder>() {
     private val sharedPrefData = SharedPrefData(application)
 
     inner class ViewHolder(private val binding: ItemDataShowBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(data: Data10Min, dateList: List<String>, position: Int){
+        fun bind(data: Data10Min, dateList: List<String>?, position: Int){
             val period = sharedPrefData.callDataString("period")
-            val arusMasuk = data.arusMasuk.toString() + "A"
-            val arusKeluar = data.arusKeluar.toString() + "A"
-            val tegangan = data.tegangan.toString() + "v"
-            val soc = data.soc.toString() + "%"
+            val arusMasuk = "${data.arusMasuk}A"
+            val arusKeluar = "${data.arusKeluar}A"
+            val tegangan = "${data.tegangan}v"
+            val soc = "${data.soc}%"
 
-            when (period) {
-                "Monthly" -> {
-                    val date = dateList[position] + " " + data.currentTime
-                    binding.dataTime.text = date
-                }
-                "Weekly" -> {
-                    val date = dateList[position] + " " + data.currentTime
-                    binding.dataTime.text = date
-                }
-                "Daily" -> {
-                    binding.dataTime.text = data.currentTime
-                }
+            val date = when (period) {
+                "Monthly", "Weekly" -> dateList?.getOrNull(position) ?: ""
+                else -> ""
             }
+
+            binding.dataTime.text = if (date.isNotEmpty()) "$date ${data.currentTime}" else data.currentTime
             binding.dataSoc.text = soc
             binding.dataTegangan.text = tegangan
             binding.dataCurrentIn.text = arusMasuk

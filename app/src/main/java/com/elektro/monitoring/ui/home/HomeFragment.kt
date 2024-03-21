@@ -178,7 +178,7 @@ class HomeFragment : Fragment() {
             dataViewModel.mSoC.postValue(mSoC)
         }
 
-        dataViewModel.time.observe(viewLifecycleOwner) { time ->
+        dataViewModel.time.observe(viewLifecycleOwner) {
             dataViewModel.currentOut.observe(viewLifecycleOwner) { currentOut ->
                 updateLineChart(currentOut, binding.graphCurrentOut, today)
             }

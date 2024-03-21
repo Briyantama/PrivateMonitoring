@@ -3,11 +3,13 @@ package com.elektro.monitoring.ui.data
 import android.app.Application
 import android.content.Context
 import android.os.Bundle
+import android.os.Environment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -25,8 +27,15 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import dagger.hilt.android.AndroidEntryPoint
+import org.apache.poi.ss.usermodel.BorderStyle
+import org.apache.poi.ss.usermodel.FillPatternType
+import org.apache.poi.ss.usermodel.HorizontalAlignment
+import org.apache.poi.ss.usermodel.IndexedColors
+import org.apache.poi.xssf.usermodel.XSSFWorkbook
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
 import javax.inject.Inject
-
 
 @AndroidEntryPoint
 class DataShowFragment : Fragment() {
@@ -68,6 +77,14 @@ class DataShowFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        dataViewModel.data10MinList.observe(viewLifecycleOwner) { list ->
+            dataViewModel.mListDate.observe(viewLifecycleOwner) { listDate ->
+                binding.btnDownload.setOnClickListener {
+                    createXlsx(requireContext(), list, listDate)
+                }
+            }
+        }
+
         binding.btnBack.setOnClickListener {
             findNavController().navigateUp()
         }
@@ -138,8 +155,12 @@ class DataShowFragment : Fragment() {
                 count += 1f
             }
 
-            dataViewModel.mListDate.observe(viewLifecycleOwner) { list ->
-                showListData(data, list, requireContext(), requireActivity().application)
+            if (period != "Daily"){
+                dataViewModel.mListDate.observe(viewLifecycleOwner) { list ->
+                    showListData(data, list, requireContext(), requireActivity().application)
+                }
+            } else {
+                showListData(data, null, requireContext(), requireActivity().application)
             }
             dataViewModel.mTime.postValue(mTime)
             dataViewModel.mCurrentOut.postValue(mCurrentOut)
@@ -148,7 +169,7 @@ class DataShowFragment : Fragment() {
             dataViewModel.mSoC.postValue(mSoC)
         }
 
-        dataViewModel.time.observe(viewLifecycleOwner) { time ->
+        dataViewModel.time.observe(viewLifecycleOwner) {
             dataViewModel.currentOut.observe(viewLifecycleOwner) { currentOut ->
                 updateLineChart(currentOut, binding.graphCurrentOut, dateSelect)
             }
@@ -164,7 +185,104 @@ class DataShowFragment : Fragment() {
         }
     }
 
-    private fun showListData(listDate: MutableList<Data10Min>, dateList: List<String>, context: Context, application: Application) {
+    private fun createXlsx(context: Context, listData10Min: List<Data10Min>, dateList: List<String>) {
+        try {
+            val dateSelect = sharedPrefData.callDataString("dateSelect")
+            val period = sharedPrefData.callDataString("period")
+
+            val root = File(
+                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "FileExcel"
+            )
+
+            if (!root.exists()) root.mkdirs()
+            val path = File(root, "$dateSelect.xlsx")
+            val workbook = XSSFWorkbook()
+            val outputStream = FileOutputStream(path)
+
+            val headerStyle = workbook.createCellStyle().apply {
+                setAlignment(HorizontalAlignment.CENTER)
+                fillForegroundColor = IndexedColors.BLUE_GREY.index
+                setFillPattern(FillPatternType.SOLID_FOREGROUND)
+                setBorderTop(BorderStyle.MEDIUM)
+                setBorderLeft(BorderStyle.MEDIUM)
+                setBorderRight(BorderStyle.MEDIUM)
+                setBorderBottom(BorderStyle.MEDIUM)
+                setFont(workbook.createFont().apply {
+                    fontHeightInPoints = 12
+                    fontName = "Times New Roman"
+                    color = IndexedColors.WHITE.index
+                    bold = true
+                })
+            }
+            val dataStyle = workbook.createCellStyle().apply {
+                setAlignment(HorizontalAlignment.CENTER)
+                setFont(workbook.createFont().apply {
+                    fontHeightInPoints = 12
+                })
+            }
+
+            val headerTitlesDaily = arrayOf("Time", "Current Charging(A)",
+                "Current Discharging(A)", "Volt(v)", "SoC(%)")
+            val headerTitles = arrayOf("Date") + headerTitlesDaily
+
+            val sheet = workbook.createSheet("Data $dateSelect")
+            val headerRow = sheet.createRow(0)
+
+            val headers = if (period != "Daily") headerTitles else headerTitlesDaily
+
+            for ((index, title) in headers.withIndex()) {
+                val cell = headerRow.createCell(index)
+                cell.setCellValue(title)
+                cell.cellStyle = headerStyle
+            }
+
+            for ((index, data) in listData10Min.withIndex()) {
+                val row = sheet.createRow(index + 1)
+
+                if (period != "Daily") {
+                    row.createCell(0).apply {
+                        setCellValue(dateList[index])
+                        cellStyle = dataStyle
+                    }
+                }
+                row.createCell(if (period != "Daily") 1 else 0).apply {
+                    setCellValue(data.currentTime)
+                    cellStyle = dataStyle
+                }
+                row.createCell(if (period != "Daily") 2 else 1).apply {
+                    setCellValue(data.arusMasuk.toDouble())
+                    cellStyle = dataStyle
+                }
+                row.createCell(if (period != "Daily") 3 else 2).apply {
+                    setCellValue(data.arusKeluar.toDouble())
+                    cellStyle = dataStyle
+                }
+                row.createCell(if (period != "Daily") 4 else 3).apply {
+                    setCellValue(data.tegangan.toDouble())
+                    cellStyle = dataStyle
+                }
+                row.createCell(if (period != "Daily") 5 else 4).apply {
+                    setCellValue(data.soc.toDouble())
+                    cellStyle = dataStyle
+                }
+            }
+
+            for (i in headers.indices) {
+                sheet.setColumnWidth(i, 104 * 64)
+            }
+
+            workbook.write(outputStream)
+            outputStream.close()
+
+            Toast.makeText(context, "Data berhasil diekspor!", Toast.LENGTH_SHORT).show()
+        } catch (e: IOException) {
+            e.printStackTrace()
+            Toast.makeText(context, "Gagal menyimpan file!", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+
+    private fun showListData(listDate: MutableList<Data10Min>, dateList: List<String>?, context: Context, application: Application) {
         val adapter = DataAdapter(listDate, dateList, application)
         binding.rvDataShow.adapter = adapter
         binding.rvDataShow.layoutManager = LinearLayoutManager(context)

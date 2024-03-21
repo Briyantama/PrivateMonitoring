@@ -55,12 +55,10 @@ class MainActivity : AppCompatActivity() {
                     navController.navigate(R.id.accountFragment, null, clearNav)
                     true
                 }
-
                 navHome -> {
                     navController.navigate(R.id.homeFragment, null, clearNav)
                     true
                 }
-
                 else -> {
                     false
                 }
