@@ -1,14 +1,12 @@
 package com.elektro.monitoring.ui.adapter
 
 import android.app.Application
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.elektro.monitoring.R
 import com.elektro.monitoring.databinding.ItemSelectDateBinding
-import com.elektro.monitoring.helper.Constants.TAG
 import com.elektro.monitoring.helper.sharedpref.SharedPrefData
 import com.elektro.monitoring.helper.utils.getMonth
 import com.elektro.monitoring.helper.utils.getTanggal
@@ -21,17 +19,22 @@ class DateAdapter(private val itemList: List<String>, application: Application)
     private val sharedPrefData = SharedPrefData(application)
 
     inner class ViewHolder(private val binding: ItemSelectDateBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(text: String){
+        fun bind(text: String) {
             binding.date.text = text
             binding.tanggal.setOnClickListener {
                 val period = sharedPrefData.callDataString("period")
                 sharedPrefData.editDataString("dateSelect", text)
                 saveSP(period, text)
-                Navigation.findNavController(binding.root)
-                    .navigate(R.id.action_dateSelectFragment_to_dataShowFragment)
+                navigateToDataShowFragment()
             }
         }
+
+        private fun navigateToDataShowFragment() {
+            Navigation.findNavController(binding.root)
+                .navigate(R.id.action_dateSelectFragment_to_dataShowFragment)
+        }
     }
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ItemSelectDateBinding.inflate(
@@ -46,27 +49,35 @@ class DateAdapter(private val itemList: List<String>, application: Application)
         holder.bind(currentItem)
     }
 
-    private fun saveSP(period: String, text: String){
-        when (period) {
-            "Monthly" -> {
-                val bulan = invertBulan(text)
-                sharedPrefData.editDataString("dateRef", bulan)
-            }
+    private fun saveSP(period: String, text: String) {
+        val dateRef = when (period) {
+            "Monthly" -> invertBulan(text)
             "Weekly" -> {
-                val part = text.split(" ")
-                val minggu = invertMinggu(part[0] + " " + part[1])
-                val bulan = invertBulan(part[2])
-                sharedPrefData.editDataString("dateRef", "$bulan/$minggu")
+                val (week, month) = invertWeekAndMonth(text)
+                "$month/$week"
             }
             "Daily" -> {
-                val week = getWeekNumber(text)
-                val tanggal = getTanggal(text)
-                val bulan = invertBulan(getMonth(text))
-                sharedPrefData.editDataString("dateRef", "$bulan/$week/$tanggal/$text")
+                val (week, day, month, year) = invertWeekDayMonthYear(text)
+                "$month/$week/$day/$year"
             }
-            else -> {
-                Log.e(TAG, "Unexpected period value: $period")
-            }
+            else -> ""
         }
+
+        sharedPrefData.editDataString("dateRef", dateRef)
+    }
+
+    private fun invertWeekAndMonth(text: String): Pair<String, String> {
+        val parts = text.split(" ")
+        val week = invertMinggu("${parts[0]} ${parts[1]}")
+        val month = invertBulan(parts[2])
+        return Pair(week, month)
+    }
+
+    private fun invertWeekDayMonthYear(text: String): List<String> {
+        val week = getWeekNumber(text).toString()
+        val day = getTanggal(text)
+        val month = invertBulan(getMonth(text))
+        val year = text.substringAfterLast(' ')
+        return listOf(week, day, month, year)
     }
 }

@@ -17,8 +17,8 @@ fun Context.showToastWithoutIcon(message: String, duration: Int = Toast.LENGTH_S
     binding.toastText.text = message
 
     val toast = Toast(applicationContext)
-    toast.setGravity(Gravity.CENTER_HORIZONTAL or Gravity.BOTTOM, 0, 160)
     toast.duration = duration
+    toast.view = binding.root
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
         toast.addCallback(object : Toast.Callback(){
             override fun onToastShown() {

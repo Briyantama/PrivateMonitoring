@@ -33,10 +33,8 @@ class MainActivity : AppCompatActivity() {
         (supportFragmentManager.findFragmentById(R.id.nav_host_activity) as NavHostFragment).navController
     }
 
-    private val requestPermissionLauncher = registerForActivityResult(
-        ActivityResultContracts.RequestPermission()
-    ) {
-    }
+    private val requestPermissionLauncherNotif = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()){}
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -82,7 +80,7 @@ class MainActivity : AppCompatActivity() {
         authViewModel.loggedUser()
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            requestPermissionLauncher.launch(
+            requestPermissionLauncherNotif.launch(
                 Manifest.permission.POST_NOTIFICATIONS
             )
         }

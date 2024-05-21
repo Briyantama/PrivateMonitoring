@@ -52,9 +52,9 @@ android {
 dependencies {
 
     //std library
-    implementation 'androidx.core:core-ktx:1.12.0'
+    implementation 'androidx.core:core-ktx:1.13.1'
     implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.11.0'
+    implementation 'com.google.android.material:material:1.12.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
 
     //nav component
@@ -90,30 +90,30 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3"
 
     // ViewModel
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.0"
     // LiveData
-    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.7.0"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.8.0"
     // Lifecycles only (without ViewModel or LiveData)
-    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.7.0"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.8.0"
     // Saved state module for ViewModel
-    implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:2.7.0"
-    implementation "androidx.lifecycle:lifecycle-common-java8:2.7.0"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:2.8.0"
+    implementation "androidx.lifecycle:lifecycle-common-java8:2.8.0"
     //activity ktx
-    implementation "androidx.activity:activity-ktx:1.8.2"
+    implementation "androidx.activity:activity-ktx:1.9.0"
     //fragment ktx
-    implementation "androidx.fragment:fragment-ktx:1.6.2"
+    implementation "androidx.fragment:fragment-ktx:1.7.1"
     //line chart
     implementation "com.github.PhilJay:MPAndroidChart:v3.1.0"
 
     //firebase
     implementation platform('com.google.firebase:firebase-bom:32.6.0')
-    implementation 'com.google.firebase:firebase-analytics-ktx:21.5.1'
-    implementation 'com.google.firebase:firebase-crashlytics-ktx:18.6.2'
-    implementation 'com.google.firebase:firebase-crashlytics-buildtools:2.9.9'
-    implementation 'com.google.firebase:firebase-analytics-ktx:21.5.1'
-    implementation 'com.google.firebase:firebase-storage-ktx:20.3.0'
-    implementation 'com.google.firebase:firebase-database-ktx:20.3.1'
-    implementation 'com.google.firebase:firebase-auth-ktx:22.3.1'
+    implementation 'com.google.firebase:firebase-analytics-ktx:22.0.0'
+    implementation 'com.google.firebase:firebase-crashlytics-ktx:19.0.0'
+    implementation 'com.google.firebase:firebase-crashlytics-buildtools:3.0.0'
+    implementation 'com.google.firebase:firebase-analytics-ktx:22.0.0'
+    implementation 'com.google.firebase:firebase-storage-ktx:21.0.0'
+    implementation 'com.google.firebase:firebase-database-ktx:21.0.0'
+    implementation 'com.google.firebase:firebase-auth-ktx:23.0.0'
 
     //Dagger - Hilt
     implementation "androidx.work:work-runtime-ktx:2.9.0"
@@ -122,8 +122,8 @@ dependencies {
     annotationProcessor 'com.google.dagger:hilt-android-compiler:2.49'
 
     //excel
-    implementation 'org.apache.poi:poi:4.0.0'
-    implementation 'org.apache.poi:poi-ooxml:4.0.0'
+    implementation 'org.apache.poi:poi:3.17'
+    implementation 'org.apache.poi:poi-ooxml:3.17'
     implementation 'javax.xml.stream:stax-api:1.0'
     implementation 'org.apache.xmlbeans:xmlbeans:3.1.0'
     implementation 'com.fasterxml:aalto-xml:1.2.2'

@@ -1,7 +1,9 @@
 package com.elektro.monitoring.ui.data
 
+import android.Manifest
 import android.app.Application
 import android.content.Context
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Environment
 import android.view.LayoutInflater
@@ -10,6 +12,8 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -77,12 +81,9 @@ class DataShowFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        dataViewModel.data10MinList.observe(viewLifecycleOwner) { list ->
-            dataViewModel.mListDate.observe(viewLifecycleOwner) { listDate ->
-                binding.btnDownload.setOnClickListener {
-                    createXlsx(requireContext(), list, listDate)
-                }
-            }
+
+        binding.btnDownload.setOnClickListener {
+            exportDataToExcel()
         }
 
         binding.btnBack.setOnClickListener {
@@ -185,63 +186,75 @@ class DataShowFragment : Fragment() {
         }
     }
 
-    private fun createXlsx(context: Context, listData10Min: List<Data10Min>, dateList: List<String>) {
+    private fun exportDataToExcel() {
+        val period = sharedPrefData.callDataString("period")
+        dataViewModel.data10MinList.observe(viewLifecycleOwner) { list ->
+            if (period != "Daily") {
+                dataViewModel.mListDate.observe(viewLifecycleOwner) { listDate ->
+                    createXlsx(requireContext(), list, listDate)
+                }
+            } else {
+                createXlsx(requireContext(), list, null)
+            }
+        }
+    }
+
+    private fun createXlsx(context: Context, listData10Min: List<Data10Min>, dateList: List<String>?) {
         try {
             val dateSelect = sharedPrefData.callDataString("dateSelect")
             val period = sharedPrefData.callDataString("period")
 
             val root = File(
-                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "FileExcel"
+                Environment
+                    .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "FileExcel"
             )
-
             if (!root.exists()) root.mkdirs()
-            val path = File(root, "$dateSelect.xlsx")
+            val path = File(root, "/$dateSelect.xlsx")
+
             val workbook = XSSFWorkbook()
             val outputStream = FileOutputStream(path)
+            val sheet = workbook.createSheet("Data $dateSelect")
 
-            val headerStyle = workbook.createCellStyle().apply {
-                setAlignment(HorizontalAlignment.CENTER)
-                fillForegroundColor = IndexedColors.BLUE_GREY.index
-                setFillPattern(FillPatternType.SOLID_FOREGROUND)
-                setBorderTop(BorderStyle.MEDIUM)
-                setBorderLeft(BorderStyle.MEDIUM)
-                setBorderRight(BorderStyle.MEDIUM)
-                setBorderBottom(BorderStyle.MEDIUM)
-                setFont(workbook.createFont().apply {
-                    fontHeightInPoints = 12
-                    fontName = "Times New Roman"
-                    color = IndexedColors.WHITE.index
-                    bold = true
-                })
-            }
-            val dataStyle = workbook.createCellStyle().apply {
-                setAlignment(HorizontalAlignment.CENTER)
-                setFont(workbook.createFont().apply {
-                    fontHeightInPoints = 12
-                })
-            }
+            val headerStyle = workbook.createCellStyle()
+            headerStyle.setAlignment(HorizontalAlignment.CENTER)
+            headerStyle.fillForegroundColor = IndexedColors.BLUE_GREY.getIndex()
+            headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND)
+            headerStyle.setBorderTop(BorderStyle.MEDIUM)
+            headerStyle.setBorderBottom(BorderStyle.MEDIUM)
+            headerStyle.setBorderRight(BorderStyle.MEDIUM)
+            headerStyle.setBorderLeft(BorderStyle.MEDIUM)
+            headerStyle.setFont(workbook.createFont().apply {
+                fontHeightInPoints = 12
+                fontName = "Times New Roman"
+                color = IndexedColors.WHITE.index
+                bold = true
+            })
 
-            val headerTitlesDaily = arrayOf("Time", "Current Charging(A)",
-                "Current Discharging(A)", "Volt(v)", "SoC(%)")
+            val dataStyle = workbook.createCellStyle()
+            dataStyle.setAlignment(HorizontalAlignment.CENTER)
+            dataStyle.setFont(workbook.createFont().apply {
+                fontHeightInPoints = 12
+            })
+
+
+            val headerTitlesDaily = arrayOf("Time", "Current Charging(A)", "Current Discharging(A)", "Volt(v)", "SoC(%)")
             val headerTitles = arrayOf("Date") + headerTitlesDaily
 
-            val sheet = workbook.createSheet("Data $dateSelect")
+            val headers = if (period != "Daily") headerTitles else headerTitlesDaily
             val headerRow = sheet.createRow(0)
 
-            val headers = if (period != "Daily") headerTitles else headerTitlesDaily
-
-            for ((index, title) in headers.withIndex()) {
+            headers.forEachIndexed { index, title ->
                 val cell = headerRow.createCell(index)
                 cell.setCellValue(title)
                 cell.cellStyle = headerStyle
             }
 
-            for ((index, data) in listData10Min.withIndex()) {
+            listData10Min.forEachIndexed { index, data ->
                 val row = sheet.createRow(index + 1)
 
                 if (period != "Daily") {
                     row.createCell(0).apply {
-                        setCellValue(dateList[index])
+                        setCellValue(dateList?.get(index) ?: "")
                         cellStyle = dataStyle
                     }
                 }
@@ -250,29 +263,30 @@ class DataShowFragment : Fragment() {
                     cellStyle = dataStyle
                 }
                 row.createCell(if (period != "Daily") 2 else 1).apply {
-                    setCellValue(data.arusMasuk.toDouble())
+                    setCellValue(data.arusMasuk.toString())
                     cellStyle = dataStyle
                 }
                 row.createCell(if (period != "Daily") 3 else 2).apply {
-                    setCellValue(data.arusKeluar.toDouble())
+                    setCellValue(data.arusKeluar.toString())
                     cellStyle = dataStyle
                 }
                 row.createCell(if (period != "Daily") 4 else 3).apply {
-                    setCellValue(data.tegangan.toDouble())
+                    setCellValue(data.tegangan.toString())
                     cellStyle = dataStyle
                 }
                 row.createCell(if (period != "Daily") 5 else 4).apply {
-                    setCellValue(data.soc.toDouble())
+                    setCellValue(data.soc.toString())
                     cellStyle = dataStyle
                 }
             }
 
-            for (i in headers.indices) {
-                sheet.setColumnWidth(i, 104 * 64)
+            headers.indices.forEach {
+                sheet.setColumnWidth(it, 104 * 64)
             }
 
             workbook.write(outputStream)
             outputStream.close()
+            workbook.close()
 
             Toast.makeText(context, "Data berhasil diekspor!", Toast.LENGTH_SHORT).show()
         } catch (e: IOException) {
@@ -280,7 +294,6 @@ class DataShowFragment : Fragment() {
             Toast.makeText(context, "Gagal menyimpan file!", Toast.LENGTH_SHORT).show()
         }
     }
-
 
     private fun showListData(listDate: MutableList<Data10Min>, dateList: List<String>?, context: Context, application: Application) {
         val adapter = DataAdapter(listDate, dateList, application)
